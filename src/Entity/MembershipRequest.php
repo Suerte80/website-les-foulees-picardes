@@ -14,75 +14,42 @@ class MembershipRequest
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $email = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $firstName = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $lastName = null;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $message = null;
 
     #[ORM\Column]
     private ?bool $rgpdAccepted = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, options: ['default' => 'pending'])]
     private ?string $status = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $reminderSendAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'membershipRequests')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Member $validatedBy = null;
+
+    #[ORM\OneToOne(inversedBy: 'membershipRequest', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Member $requester = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+
+        $this->status = 'pending';
+    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): static
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): static
-    {
-        $this->lastName = $lastName;
-
-        return $this;
     }
 
     public function getMessage(): ?string
@@ -165,6 +132,18 @@ class MembershipRequest
     public function setValidatedBy(?Member $validatedBy): static
     {
         $this->validatedBy = $validatedBy;
+
+        return $this;
+    }
+
+    public function getRequester(): ?Member
+    {
+        return $this->requester;
+    }
+
+    public function setRequester(Member $requester): static
+    {
+        $this->requester = $requester;
 
         return $this;
     }

@@ -19,7 +19,7 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     /**
@@ -49,13 +49,13 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20)]
     private ?string $phone = null;
 
-    #[ORM\Column(length: 16)]
-    private ?string $membershipStatus = 'pending';
+    #[ORM\Column(length: 16, options: ['default' => 'pending'])]
+    private ?string $membershipStatus;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTime $membershipExpiresAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -70,9 +70,16 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: MembershipRequest::class, mappedBy: 'validatedBy')]
     private Collection $membershipRequests;
 
+    #[ORM\OneToOne(mappedBy: 'requester', cascade: ['persist', 'remove'])]
+    private ?MembershipRequest $membershipRequest = null;
+
     public function __construct()
     {
         $this->membershipRequests = new ArrayCollection();
+
+        $this->createdAt = new \DateTimeImmutable();
+
+        $this->membershipStatus = 'pending';
     }
 
     public function getId(): ?int
@@ -197,7 +204,7 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->dateOfBirth;
     }
 
-    public function setDateOfBirth(string $dateOfBirth): static
+    public function setDateOfBirth(\DateTime $dateOfBirth): static
     {
         $this->dateOfBirth = $dateOfBirth;
 
@@ -302,6 +309,23 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
                 $membershipRequest->setValidatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMembershipRequest(): ?MembershipRequest
+    {
+        return $this->membershipRequest;
+    }
+
+    public function setMembershipRequest(MembershipRequest $membershipRequest): static
+    {
+        // set the owning side of the relation if necessary
+        if ($membershipRequest->getRequester() !== $this) {
+            $membershipRequest->setRequester($this);
+        }
+
+        $this->membershipRequest = $membershipRequest;
 
         return $this;
     }
