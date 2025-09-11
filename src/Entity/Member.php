@@ -64,6 +64,9 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $isVerified = false;
+
     /**
      * @var Collection<int, MembershipRequest>
      */
@@ -199,7 +202,7 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDateOfBirth(): ?string
+    public function getDateOfBirth(): ?\DateTime
     {
         return $this->dateOfBirth;
     }
@@ -326,6 +329,18 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->membershipRequest = $membershipRequest;
+
+        return $this;
+    }
+
+    public function getIsVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

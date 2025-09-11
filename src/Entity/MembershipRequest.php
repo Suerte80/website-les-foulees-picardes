@@ -40,6 +40,15 @@ class MembershipRequest
     #[ORM\JoinColumn(nullable: false)]
     private ?Member $requester = null;
 
+    #[ORM\Column(length: 64)]
+    private ?string $verificationTokenHash = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $isEmailVerified = false;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $emailVerifiedAt = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -144,6 +153,42 @@ class MembershipRequest
     public function setRequester(Member $requester): static
     {
         $this->requester = $requester;
+
+        return $this;
+    }
+
+    public function getVerificationTokenHash(): ?string
+    {
+        return $this->verificationTokenHash;
+    }
+
+    public function setVerificationTokenHash(string $verificationTokenHash): static
+    {
+        $this->verificationTokenHash = $verificationTokenHash;
+
+        return $this;
+    }
+
+    public function isEmailVerified(): ?bool
+    {
+        return $this->isEmailVerified;
+    }
+
+    public function setIsEmailVerified(bool $isEmailVerified): static
+    {
+        $this->isEmailVerified = $isEmailVerified;
+
+        return $this;
+    }
+
+    public function getEmailVerifiedAt(): ?\DateTimeImmutable
+    {
+        return $this->emailVerifiedAt;
+    }
+
+    public function setEmailVerifiedAt(?\DateTimeImmutable $emailVerifiedAt): static
+    {
+        $this->emailVerifiedAt = $emailVerifiedAt;
 
         return $this;
     }
