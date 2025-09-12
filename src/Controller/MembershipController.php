@@ -132,7 +132,7 @@ final class MembershipController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Votre email a été validé.');
-            return $this->redirectToRoute('app_main');
+            return $this->redirectToRoute('app_index');
         } else{
             // Dans ce cas aucun membershipRequest n'a été trouvé avec ce hash de token
             return $this->render('membership/error_verify_email.html.twig', []);
