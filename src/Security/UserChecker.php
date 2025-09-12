@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\Member;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -13,6 +14,10 @@ class UserChecker implements UserCheckerInterface
     {
         if(!$user instanceof Member) {
             return;
+        }
+
+        if($user->getDeletedAt() != null) {
+            throw new CustomUserMessageAccountStatusException('Votre compte n\'est pas valide.');
         }
 
         if(!$user->isActive()) {
