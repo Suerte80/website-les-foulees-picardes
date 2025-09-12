@@ -23,12 +23,6 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
-    private array $roles = [];
-
-    /**
      * @var string The hashed password
      */
     #[ORM\Column]
@@ -70,11 +64,19 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, MembershipRequest>
      */
+    #[ORM\Column(nullable: true)]
     #[ORM\OneToMany(targetEntity: MembershipRequest::class, mappedBy: 'validatedBy')]
     private Collection $membershipRequests;
 
+    #[ORM\Column(nullable: true)]
     #[ORM\OneToOne(mappedBy: 'requester', cascade: ['persist', 'remove'])]
     private ?MembershipRequest $membershipRequest = null;
+
+    /**
+     * @var Collection<int, Role>
+     */
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'members')]
+    private Collection $rolesEntities;
 
     public function __construct()
     {
@@ -83,6 +85,7 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createdAt = new \DateTimeImmutable();
 
         $this->membershipStatus = 'pending';
+        $this->rolesEntities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,11 +120,10 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $codes = array_map(fn(Role $role) => $role->getCode(), $this->rolesEntities->toArray());
+        $codes[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        return array_unique($codes);
     }
 
     /**
@@ -129,7 +131,12 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        $this->rolesEntities->clear();
+        foreach ($roles as $role) {
+            if($role instanceof Role){
+                $this->rolesEntities->add($role);
+            }
+        }
 
         return $this;
     }
@@ -238,6 +245,11 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function isActive(): bool
+    {
+        return $this->membershipStatus === 'active';
+    }
+
     public function getMembershipExpiresAt(): ?\DateTime
     {
         return $this->membershipExpiresAt;
@@ -341,6 +353,30 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Role>
+     */
+    public function getRolesEntities(): Collection
+    {
+        return $this->rolesEntities;
+    }
+
+    public function addRolesEntity(Role $rolesEntity): static
+    {
+        if (!$this->rolesEntities->contains($rolesEntity)) {
+            $this->rolesEntities->add($rolesEntity);
+        }
+
+        return $this;
+    }
+
+    public function removeRolesEntity(Role $rolesEntity): static
+    {
+        $this->rolesEntities->removeElement($rolesEntity);
 
         return $this;
     }
