@@ -63,11 +63,16 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var Collection<int, MembershipRequest>
+     *
+     * La liste des demandes d'adhésion validées par ce membre.
      */
     #[ORM\Column(nullable: true)]
     #[ORM\OneToMany(targetEntity: MembershipRequest::class, mappedBy: 'validatedBy')]
     private Collection $membershipRequests;
 
+    /**
+     * @var MembershipRequest|null C'est la demande d'adhésion déposée par le membre.
+     */
     #[ORM\Column(nullable: true)]
     #[ORM\OneToOne(mappedBy: 'requester', cascade: ['persist', 'remove'])]
     private ?MembershipRequest $membershipRequest = null;
