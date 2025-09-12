@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BoardController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Prénom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Date de naissance</th>
+                <th scope="col">Date/heure de demande</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for membership_request in membership_requests %}
+            <tr>
+                <th>{{ membership_request.requester.firstname }}</th>
+                <th>{{ membership_request.requester.lastname }}</th>
+                <th>{{ membership_request.requester.email }}</th>
+                <th>{{ membership_request.requester.address }}</th>
+                <th>{{ membership_request.requester.dateOfBirth|date('d/m/Y') }}</th>
+                <th>{{ membership_request.createdAt|date('d/m/Y h:m') }}</th>
+                <th>
+                    <form action="{{ path('app_secretary_validate', {id: membership_request.id}) }}" method="POST">
+                        <button type="submit">Valider</button>
+                    </form>
+
+                    <form action="{{ path('app_secretary_reject', {id: membership_request.id}) }}" method="POST">
+                        <button type="submit">Rejeter</button>
+                    </form>
+                </th>
+            </tr>
+        {% else %}
+            <tr>
+                <th colspan="6">Aucune requête en attente.</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
