@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MemberController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Bonjour {{ app.user.firstname }}! ✅</h1>
+
+    <section id="section-readable">
+        <h2>Vos informations personnelles :</h2>
+        <ul>
+            <li>Prénom: {{ app.user.firstname }}</li>
+            <li>Nom: {{ app.user.lastname }}</li>
+            <li>Email: {{ app.user.email }}</li>
+            <li>Adresse: {{ app.user.address }}</li>
+            <li>Numéro de téléphone: {{ app.user.phone }}</li>
+            <li>Status de l'inscription: {{ app.user.membershipStatus }}</li>
+            <li>L'inscription expire à: {{ app.user.membershipExpiresAt|date('d/m/Y') }}</li>
+            <li>Dernière mise à jour: {{ app.user.updatedAt|date('d/m/Y') }}</li>
+        </ul>
+    </section>
+
+    <section id="section-editable" style="display: none;">
+        {{ form_start(form) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.firstname) }}
+            {{ form_row(form.lastname) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.dateOfBirth) }}
+            {{ form_row(form.phone) }}
+        <a href="{{ path('member_change_password') }}">Cliquez ici pour modifier votre mot de passe.</a>
+        {{ form_end(form) }}
+    </section>
+
+    <button id="btn-edit">Éditer</button>
+</div>
+{% endblock %}
