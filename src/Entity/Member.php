@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -20,27 +22,111 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[
+        Assert\Email(
+            message: 'Votre email n\'est pas valide.',
+        ),
+        Assert\Length(
+            min: 4,
+            max: 255,
+            minMessage: 'Votre adresse email doit avoir au moins {{ limit }} caractères.',
+            maxMessage: 'Votre adresse email doit avoir au maximum {{ limit }} caractères.'
+        )
+    ]
     private ?string $email = null;
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[
+        Assert\NotBlank(
+            message: 'Votre mot de passe ne peux pas être vide.',
+        ),
+        Assert\Length(
+            max: 255,
+            maxMessage: 'Le nombre de caractère ne doit pas dépasser {{ limit }}.'
+        ),
+        Assert\PasswordStrength(
+            minScore: PasswordStrength::STRENGTH_MEDIUM,
+            message: 'Votre mot de passe n\'est pas assez fort.'
+        )
+    ]
     private ?string $password = null;
 
     #[ORM\Column(length: 100)]
+    #[
+        Assert\NotBlank(
+            message: 'Votre prénom ne peux pas être vide.',
+        ),
+        Assert\Length(
+            max: 100,
+            maxMessage: 'Votre prénom ne doit pas dépasser {{ limit }}.'
+        ),
+        Assert\Regex(
+            pattern: '/^[\p{L}][\p{L}\s\-\']*$/u',
+            message: 'Votre prénom n\'est pas valide.'
+        )
+    ]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 100)]
+    #[
+        Assert\NotBlank(
+            message: 'Votre nom ne peux pas être vide.',
+        ),
+        Assert\Length(
+            max: 100,
+            maxMessage: "Votre nom ne doit pas dépasser {{ limit }}."
+        ),
+        Assert\Regex(
+            pattern: '/^[\p{L}][\p{L}\s\-\']*$/u',
+            message: 'Votre nom n\'est pas valide.'
+        )
+    ]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
+    #[
+        Assert\NotBlank(
+            message: 'Votre adresse ne doit pas être vide.'
+        ),
+        Assert\Length(
+            max: 255,
+            maxMessage: 'L\'adresse est trop longue.'
+        ),
+        Assert\Regex(
+            pattern: '/^[0-9\p{L}\s\.\,\-\'\/]+$/u',
+            message: 'L’adresse ne peut contenir que des lettres, chiffres et ponctuation simple.'
+        )
+    ]
     private ?string $address = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[
+        Assert\NotBlank(
+            message: 'Date de naissance obligatoire.'
+        ),
+        Assert\LessThan('today', message: 'La date de naissance doit être dans le passé.')
+    ]
     private ?\DateTime $dateOfBirth = null;
 
     #[ORM\Column(length: 20)]
+    #[
+        Assert\NotBlank(
+            message: 'Numéro de téléphone obligatoire.'
+        ),
+        Assert\Length(
+            min: 8,
+            max: 18,
+            minMessage: 'Le numéro de téléphone doit avoir au moins 8 caractères.',
+            maxMessage: 'Le numéro de téléphone ne peut pas dépasser {{ limit }}.'
+        ),
+        Assert\Regex(
+            pattern: '/^\+?[0-9 \.]{10,12}/u',
+            message: 'Le numéro de téléphone doit être de la forme \'XX.XX.XX.XX.XX\' ou \'XX XX XX XX XX\''
+        )
+    ]
     private ?string $phone = null;
 
     #[ORM\Column(length: 16, options: ['default' => 'pending'])]

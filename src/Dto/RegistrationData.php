@@ -90,9 +90,12 @@ class RegistrationData
     ]
     public ?string $address = null;
 
-    #[Assert\NotBlank(
-        message: 'Date de naissance obligatoire.'
-    )]
+    #[
+        Assert\NotBlank(
+            message: 'Date de naissance obligatoire.'
+        ),
+        Assert\LessThan('today', message: 'La date de naissance doit être dans le passé.')
+    ]
     public ?\DateTimeInterface $dateOfBirth = null;
 
     #[
