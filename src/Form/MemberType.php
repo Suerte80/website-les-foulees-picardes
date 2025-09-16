@@ -6,11 +6,13 @@ use App\Entity\Member;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class MemberType extends AbstractType
 {
@@ -19,6 +21,22 @@ class MemberType extends AbstractType
         $value = $options['value'];
 
         $builder
+            ->add('avatar', FileType::class, [
+                'label' => 'Image de profil (JPEG/PNG/WebP 5Mo max)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File(
+                        maxSize: '5M',
+                        mimeTypes: [
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp'
+                        ],
+                        mimeTypesMessage: 'Format autorisés : JPEG, PNG, Webp'
+                    )
+                ]
+            ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'attr' => [
