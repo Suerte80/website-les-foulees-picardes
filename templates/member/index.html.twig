@@ -14,6 +14,15 @@
     <section id="section-readable">
         <h2>Vos informations personnelles :</h2>
         <ul>
+            {% if app.user.avatarFilename %}
+                <li>
+                    <img src="{{ asset('uploads/avatars/' ~ app.user.avatarFilename) }}" alt="Avatar de {{ app.user.firstname ~ ' ' ~ app.user.lastname }}" width="100" height="100">
+                </li>
+            {% else %}
+                <li>
+                    <img src="{{ asset('uploads/avatars/default_avatar.png') }}" alt="Avatar de {{ app.user.firstname ~ ' ' ~ app.user.lastname }}" width="100" height="100">
+                </li>
+            {% endif %}
             <li>Prénom: {{ app.user.firstname }}</li>
             <li>Nom: {{ app.user.lastname }}</li>
             <li>Email: {{ app.user.email }}</li>
@@ -27,14 +36,19 @@
 
     <section id="section-editable" style="display: none;">
         {{ form_start(form) }}
+            {{ form_row(form.avatar) }}
             {{ form_row(form.email) }}
             {{ form_row(form.firstname) }}
             {{ form_row(form.lastname) }}
             {{ form_row(form.address) }}
             {{ form_row(form.dateOfBirth) }}
             {{ form_row(form.phone) }}
-        <a href="{{ path('member_change_password') }}">Cliquez ici pour modifier votre mot de passe.</a>
+            <a href="{{ path('app_member_change_password') }}">Cliquez ici pour modifier votre mot de passe.</a>
         {{ form_end(form) }}
+
+        <form action="{{ path('app_member_avatar_delete') }}" method="post">
+            <button type="submit">Supprimer votre avatar</button>
+        </form>
     </section>
 
     <button id="btn-edit">Éditer</button>

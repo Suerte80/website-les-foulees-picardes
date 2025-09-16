@@ -147,6 +147,9 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(options: ['default' => false])]
     private ?bool $isVerified = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatarFilename = null;
+
     /**
      * @var Collection<int, MembershipRequest>
      *
@@ -466,6 +469,18 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeRolesEntity(Role $rolesEntity): static
     {
         $this->rolesEntities->removeElement($rolesEntity);
+
+        return $this;
+    }
+
+    public function getAvatarFilename(): ?string
+    {
+        return $this->avatarFilename;
+    }
+
+    public function setAvatarFilename(?string $avatarFilename): static
+    {
+        $this->avatarFilename = $avatarFilename;
 
         return $this;
     }
