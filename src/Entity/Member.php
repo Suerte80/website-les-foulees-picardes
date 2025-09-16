@@ -170,6 +170,12 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'members')]
     private Collection $rolesEntities;
 
+    /**
+     * @var Collection<int, FileItem>
+     */
+    #[ORM\OneToMany(targetEntity: FileItem::class, mappedBy: 'uploadedBy')]
+    private Collection $fileItems;
+
     public function __construct()
     {
         $this->membershipRequests = new ArrayCollection();
@@ -178,6 +184,7 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
 
         $this->membershipStatus = 'pending';
         $this->rolesEntities = new ArrayCollection();
+        $this->fileItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -481,6 +488,36 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatarFilename(?string $avatarFilename): static
     {
         $this->avatarFilename = $avatarFilename;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FileItem>
+     */
+    public function getFileItems(): Collection
+    {
+        return $this->fileItems;
+    }
+
+    public function addFileItem(FileItem $fileItem): static
+    {
+        if (!$this->fileItems->contains($fileItem)) {
+            $this->fileItems->add($fileItem);
+            $fileItem->setUploadedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFileItem(FileItem $fileItem): static
+    {
+        if ($this->fileItems->removeElement($fileItem)) {
+            // set the owning side to null (unless already changed)
+            if ($fileItem->getUploadedBy() === $this) {
+                $fileItem->setUploadedBy(null);
+            }
+        }
 
         return $this;
     }

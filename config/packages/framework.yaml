@@ -9,6 +9,8 @@ framework:
         dsn: '%env(MAILER_DSN)%'
         message_bus: false
 
+    http_method_override: true
+
     #esi: true
     #fragments: true
 

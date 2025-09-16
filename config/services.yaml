@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     profile_uploads_dir: '%kernel.project_dir%/public/uploads/avatars'
+    files_manager_dir: '%kernel.project_dir%/var/storage/docs'
 
 services:
     # default configuration for services in *this* file
