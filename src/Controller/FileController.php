@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\FileItem;
 use App\Enum\FileItemType;
 use App\Repository\FileItemRepository;
+use App\Service\ZipTreeExporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\Length;
@@ -64,12 +67,7 @@ final class FileController extends AbstractController
     #[Route('/', name: 'list')]
     public function list(FileItemRepository $repo): Response
     {
-        $depth = 2;
-
-//        $files = $entityManager->getRepository(FileItem::class)->findBy(
-//            ['parent' => null],
-//            ['createdAt' => 'DESC'],
-//        );
+        $depth = 3;
 
         return $this->render('file/list.html.twig', [
             'files' => $repo->findRootsWithChildren($depth),
@@ -78,11 +76,33 @@ final class FileController extends AbstractController
     }
 
     #[Route('/download/{id}', name: 'download')]
-    public function download(FileItem $fileItem): Response
+    public function download(FileItem $fileItem, ZipTreeExporter $exporter): Response
     {
-        $path = $this->getParameter('files_manager_dir') . '/' . $fileItem->getPath();
+        switch($fileItem->getType()) {
+            case FileItemType::FILE:
+                $path = $this->getParameter('files_manager_dir') . '/' . $fileItem->getPath();
 
-        return $this->file($path, $fileItem->getName());
+                return $this->file($path, $fileItem->getName());
+                break;
+
+            case FileItemType::DIRECTORY:
+                $tmp = tempnam(sys_get_temp_dir(), 'zip_');
+                $zipPath = $tmp.'.zip';
+                @unlink($tmp);
+
+                // Avec une profondeur max
+                $exporter->export($fileItem, $zipPath, maxDepth: 3);
+
+                $response = new BinaryFileResponse($zipPath);
+                $response->setContentDisposition(
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                    sprintf('%s.zip', preg_replace('~\s+~', '_', $fileItem->getName() ?: 'dossier'))
+                );
+                // Symfony supprimera le fichier après envoi
+                $response->deleteFileAfterSend(true);
+                return $response;
+                break;
+        }
     }
 
     #[Route('/delete/{id}', name: 'delete', methods: ['DELETE'])]

@@ -41,6 +41,7 @@
                             <input type="text" id="name_{{ item.id }}" name="name" required>
                             <button type="submit">Ajouter</button>
                         </form>
+                        <a href="{{ path('app_files_download', { id: item.id }) }}">Télécharger</a>
 
                         {# Récursion avec garde-fous : maxDepth et collection initialisée #}
                         {% if item.children is defined
