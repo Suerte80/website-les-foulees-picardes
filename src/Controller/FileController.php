@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\FileItem;
+use App\Enum\FileItemType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,16 +51,20 @@ final class FileController extends AbstractController
 
             $entityManager->persist($file);
             $entityManager->flush();
+
+            return $this->redirectToRoute('app_files_list');
         }
 
-        return $this->redirectToRoute('app_files_list');
+        return $this->render('file/upload.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route('/', name: 'list')]
     public function list(EntityManagerInterface $entityManager): Response
     {
         $files = $entityManager->getRepository(FileItem::class)->findBy(
-            [],
+            ['parent' => null],
             ['createdAt' => 'DESC'],
         );
 
@@ -89,4 +94,32 @@ final class FileController extends AbstractController
 
         return $this->redirectToRoute('app_files_list');
     }
+
+    // Create directory
+    #[Route('/create/directory/', name: 'create_directory', methods: ['POST'])]
+    public function createDirectory(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $name = $request->request->get('name');
+        $parentId = $request->request->get('parent_id');
+
+        if($parentId != null){
+            $parent = $entityManager->getRepository(FileItem::class)->find($parentId);
+        }
+
+        $directory = new FileItem();
+        $directory->setName($name);
+        $directory->setParent($parent ?? null);
+        $directory->setUploadedBy($this->getUser());
+        $directory->setType(FileItemType::DIRECTORY);
+        $directory->setSize(0);
+        $directory->setPath('');
+        $directory->setMimeType('');
+
+        $entityManager->persist($directory);
+        $entityManager->flush();
+
+        return $this->json(['status' => 'ok', 'id' => $directory->getId()]);
+    }
+
+    // delete Directory
 }

@@ -1,33 +1,29 @@
+{# templates/files/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FileController!{% endblock %}
+{% block title %}Gestion des fichiers{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
-
     <div class="example-wrapper">
-        <h1>Fichiers</h1>
-        <ul>
-            {% for f in files %}
-                <li>
-                    <a href="{{ path('app_files_download', {id: f.id}) }}">
-                        {{ f.name }}
-                    </a> ({{ (f.size / 1024)|number_format(1) }} ko)
+        <h1>Gestion des fichiers</h1>
 
-                    <form method="post" action="{{ path('app_files_delete', {id: f.id}) }}" onsubmit="return confirm('Supprimer ce fichier ?');">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ f.id) }}">
-                        <button class="btn btn-danger">Supprimer</button>
-                    </form>
-                </li>
-            {% else %}
-                <li>Aucun fichier</li>
-            {% endfor %}
+        {# 👉 On affiche l'arbre UNE SEULE FOIS #}
+        {% include 'file/tree.html.twig' with { items: files } %}
 
-            <a href="{{ path('app_files_upload') }}">Téléverser un fichier.</a>
-        </ul>
+        <hr>
+
+        {# Créer un dossier à la racine #}
+        <h3>Créer un dossier à la racine</h3>
+        <form action="{{ path('app_files_create_directory') }}" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('create_dir_root') }}">
+            <input type="hidden" name="parent_id" value="">
+            <label for="name_root">Nom :</label>
+            <input type="text" id="name_root" name="name" required>
+            <button type="submit">Créer</button>
+        </form>
+
+        <hr>
+
+        <a href="{{ path('app_files_upload') }}">📤 Téléverser un fichier</a>
     </div>
 {% endblock %}
