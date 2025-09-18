@@ -1,0 +1,54 @@
+{# Arbre récursif avec sections déroulantes #}
+<ul class="tree">
+    {% for item in items %}
+        <li>
+            {% if item.isFolder %}
+                <details open>
+                    <summary>
+                        📁 <strong>{{ item.name }}</strong>
+                        <form method="post"
+                              action="{{ path('app_files_delete', { id: item.id }) }}"
+                              onsubmit="return confirm('Supprimer le dossier « {{ item.name }} » et son contenu ?');"
+                              class="inline">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                            <button class="btn-ghost">Supprimer</button>
+                        </form>
+                    </summary>
+
+                    {# Créer un sous-dossier #}
+                    <form action="{{ path('app_files_create_directory') }}" method="post" class="new-folder">
+                        <input type="hidden" name="_token" value="{{ csrf_token('create_dir' ~ item.id) }}">
+                        <input type="hidden" name="parent_id" value="{{ item.id }}">
+                        <label for="name_{{ item.id }}">Nom :</label>
+                        <input type="text" id="name_{{ item.id }}" name="name" required>
+                        <button type="submit">Ajouter</button>
+                    </form>
+
+                    {# Enfants #}
+                    {% if item.children is defined and item.children|length > 0 %}
+                        {% include 'file/tree.html.twig' with { items: item.children } %}
+                    {% else %}
+                        <p class="muted">Aucun élément</p>
+                    {% endif %}
+                </details>
+            {% else %}
+                <div class="row">
+                    📄 <a href="{{ path('app_files_download', { id: item.id }) }}">{{ item.name }}</a>
+                    {% if item.size is not null %}<small class="muted">({{ (item.size/1024)|number_format(1) }} ko)</small>{% endif %}
+
+                    <form method="post"
+                          action="{{ path('app_files_delete', { id: item.id }) }}"
+                          onsubmit="return confirm('Supprimer le fichier « {{ item.name }} » ?');"
+                          class="inline">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                        <button class="btn-ghost">Supprimer</button>
+                    </form>
+                </div>
+            {% endif %}
+        </li>
+    {% else %}
+        <li><em>Aucun élément</em></li>
+    {% endfor %}
+</ul>
