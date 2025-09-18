@@ -6,9 +6,9 @@ use App\Entity\FileItem;
 use App\Enum\FileItemType;
 use App\Repository\FileItemRepository;
 use App\Service\ZipTreeExporter;
+use App\Util\Sanitizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,9 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
 #[Route('/files', name: 'app_files_')]
 #[IsGranted('ROLE_BUREAU')]
@@ -143,5 +140,59 @@ final class FileController extends AbstractController
         $entityManager->flush();
 
         return $this->json(['status' => 'ok', 'id' => $directory->getId()]);
+    }
+
+    #[Route('/rename/{id}', name: 'rename', methods: ['POST'])]
+    public function renameFile(FileItem $fileItem, Request $request, FileItemRepository $itemRepository, EntityManagerInterface $entityManager): Response
+    {
+        $newName = trim(Sanitizer::sanitizeName($request->request->get('newName')));
+
+        // Vérification si la chaine est vide.
+        if($newName === '') {
+            return $this->json(['status' => 'error', 'message' => 'Le nom doit être valide.']);
+        }
+
+        // Vérification de la taille de la chaine.
+        if(mb_strlen($newName) > 255) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Le nom du fichier doit être inférieur a 255.'
+            ]);
+        }
+
+        // Vérification caractère non autorisé.
+        if (!preg_match('/^[\p{L}\p{N}\s._-]+$/u', $newName)) {
+            return $this->json(['status' => 'error', 'message' => 'Caractères non autorisés.'], 400);
+        }
+
+        // Si rien n'a changé rien a faire.
+        if($newName === $fileItem->getName()) {
+            return $this->json([
+                'status' => 'ok',
+                'id' => $fileItem->getId(),
+                'name' => $newName
+            ]);
+        }
+
+        $dup = $itemRepository->findOneBy([
+            'parent' => $fileItem->getParent(),
+            'name' => $newName
+        ]);
+        if($dup && $dup->getId() !== $fileItem->getId()) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Un élément porte déjà ce nom.'
+            ]);
+        }
+
+        $fileItem->setName($newName);
+
+        $entityManager->flush();
+
+        return $this->json([
+            'status' => 'ok',
+            'id' => $fileItem->getId(),
+            'name' => $fileItem->getName()
+        ]);
     }
 }

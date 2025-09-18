@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\FileItem;
+use App\Util\Sanitizer;
 use ZipArchive;
 
 class ZipTreeExporter
@@ -37,7 +38,7 @@ class ZipTreeExporter
 
         // Normalise le nom
         // Normalement le ?: 'unnamed' est inutile ici dans la base c'est en not null.
-        $name = $this->sanitizeName($item->getName() ?: 'unnamed');
+        $name = Sanitizer::sanitizeName($item->getName() ?: 'unnamed');
 
         if($item->isFile()){
             $zipPath = ltrim($basePath.$name, '/');
@@ -58,14 +59,6 @@ class ZipTreeExporter
                 $this->addItem($child, $zip, $dirPath, $depth + 1, $maxDepth, $visited);
             }
         }
-    }
-
-    private function sanitizeName(string $name): string
-    {
-        // évite ../, caractères bizarres, et normalise un peu
-        $name = str_replace(['..', '\\'], ['.', '/'], $name);
-        $name = preg_replace('~[^\p{L}\p{N}_\.\- ]+~u', '_', $name);
-        return trim($name) ?: 'item';
     }
 
     private function absoluteStoragePath(FileItem $item): string
