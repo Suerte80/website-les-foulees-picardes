@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FileItem;
 use App\Enum\FileItemType;
+use App\Repository\FileItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -61,15 +62,18 @@ final class FileController extends AbstractController
     }
 
     #[Route('/', name: 'list')]
-    public function list(EntityManagerInterface $entityManager): Response
+    public function list(FileItemRepository $repo): Response
     {
-        $files = $entityManager->getRepository(FileItem::class)->findBy(
-            ['parent' => null],
-            ['createdAt' => 'DESC'],
-        );
+        $depth = 2;
+
+//        $files = $entityManager->getRepository(FileItem::class)->findBy(
+//            ['parent' => null],
+//            ['createdAt' => 'DESC'],
+//        );
 
         return $this->render('file/list.html.twig', [
-            'files' => $files,
+            'files' => $repo->findRootsWithChildren($depth),
+            'depth' => $depth,
         ]);
     }
 
@@ -120,6 +124,4 @@ final class FileController extends AbstractController
 
         return $this->json(['status' => 'ok', 'id' => $directory->getId()]);
     }
-
-    // delete Directory
 }

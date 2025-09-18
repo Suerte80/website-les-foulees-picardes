@@ -16,6 +16,24 @@ class FileItemRepository extends ServiceEntityRepository
         parent::__construct($registry, FileItem::class);
     }
 
+    public function findRootsWithChildren(int $depth = 1): array
+    {
+        $qb = $this->createQueryBuilder('i')
+            ->leftJoin('i.children', 'c1')->addSelect('c1')
+            ->andWhere('i.parent IS NULL');
+
+        if ($depth >= 2) {
+            $qb->leftJoin('c1.children', 'c2')->addSelect('c2');
+        }
+        if ($depth >= 3) {
+            $qb->leftJoin('c2.children', 'c3')->addSelect('c3');
+        }
+
+        return $qb->distinct(true)
+            ->orderBy('i.type', 'ASC')->addOrderBy('i.name', 'ASC')
+            ->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return FileItem[] Returns an array of FileItem objects
     //     */
