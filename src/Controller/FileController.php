@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FileItem;
 use App\Enum\FileItemType;
+use App\Enum\ValidateNameEnum;
 use App\Repository\FileItemRepository;
 use App\Service\ZipTreeExporter;
 use App\Util\Sanitizer;
@@ -21,8 +22,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_BUREAU')]
 final class FileController extends AbstractController
 {
-    #[Route('/upload', name: 'upload')]
-    public function upload(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/upload/{id?}', name: 'upload')]
+    public function upload(?FileItem $parent, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createFormBuilder()
             ->add('file', FileType::class, [
@@ -50,6 +51,9 @@ final class FileController extends AbstractController
             $file->setSize($size);
             $file->setUploadedBy($this->getUser());
 
+            if(isset($parent))
+                $file->setParent($parent);
+
             $entityManager->persist($file);
             $entityManager->flush();
 
@@ -68,7 +72,30 @@ final class FileController extends AbstractController
 
         return $this->render('file/list.html.twig', [
             'files' => $repo->findRootsWithChildren($depth),
+            'parent' => null,
             'depth' => $depth,
+            'prev_dir_id' => null,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'list_dir')]
+    public function listSubDir(FileItem $fileItem, FileItemRepository $repo): Response
+    {
+        // Vérification que c'est bien un dossier
+        if($fileItem->isFolder()){
+            return $this->render('file/list.html.twig', [
+                'files' => $fileItem->getChildren(),
+                'parent' => $fileItem,
+                'depth' => 1,
+                'prev_dir_id' => ($fileItem->getParent()!=null)? $fileItem->getParent()->getId(): null,
+            ]);
+        }
+
+        $children = $fileItem->getChildren();
+        return $this->render('file/list.html.twig', [
+            'files' => $children,
+            'depth' => 1,
+            'prev_dir_id' => null,
         ]);
     }
 
@@ -105,15 +132,29 @@ final class FileController extends AbstractController
     #[Route('/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(FileItem $fileItem, EntityManagerInterface $entityManager): Response
     {
-        $path = $this->getParameter('files_manager_dir') . '/' . $fileItem->getPath();
-        if(is_file($path)) {
-            unlink($path);
+        $haveParent = $fileItem->getParent() != null;
+        if($haveParent) $parentId = $fileItem->getParent()->getId() ?? '';
+
+        if($fileItem->isFile()){
+            $path = $this->getParameter('files_manager_dir') . '/' . $fileItem->getPath();
+
+            if(is_file($path)) {
+                unlink($path);
+            }
+        } else if($fileItem->isFolder()){
+            $this->removeFileItemChildren($fileItem, $entityManager);
         }
 
         $entityManager->remove($fileItem);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_files_list');
+        if($haveParent){
+            return $this->redirectToRoute('app_files_list_dir', [
+                'id' => $parentId
+            ]);
+        } else{
+            return $this->redirectToRoute('app_files_list');
+        }
     }
 
     // Create directory
@@ -147,25 +188,15 @@ final class FileController extends AbstractController
     {
         $newName = trim(Sanitizer::sanitizeName($request->request->get('newName')));
 
-        // Vérification si la chaine est vide.
-        if($newName === '') {
-            return $this->json(['status' => 'error', 'message' => 'Le nom doit être valide.']);
-        }
-
-        // Vérification de la taille de la chaine.
-        if(mb_strlen($newName) > 255) {
+        // Vérification basique
+        $validationName = Sanitizer::validateName($newName);
+        if($validationName != ValidateNameEnum::SUCCESS)
             return $this->json([
-                'status' => 'error',
-                'message' => 'Le nom du fichier doit être inférieur a 255.'
-            ]);
-        }
+                'status' => $validationName->getStatusMessage(),
+                'message' => $validationName->getMessage()
+            ], $validationName->getStatus());
 
-        // Vérification caractère non autorisé.
-        if (!preg_match('/^[\p{L}\p{N}\s._-]+$/u', $newName)) {
-            return $this->json(['status' => 'error', 'message' => 'Caractères non autorisés.'], 400);
-        }
-
-        // Si rien n'a changé rien a faire.
+        // Si rien n'a changé rien à faire.
         if($newName === $fileItem->getName()) {
             return $this->json([
                 'status' => 'ok',
@@ -194,5 +225,24 @@ final class FileController extends AbstractController
             'id' => $fileItem->getId(),
             'name' => $fileItem->getName()
         ]);
+    }
+
+    private function removeFileItemChildren(FileItem $fileItem, EntityManagerInterface $entityManager): void
+    {
+        $children = $fileItem->getChildren();
+
+        foreach ($children as $child) {
+            if ($child->getChildren()->isEmpty()) {
+                $path = $this->getParameter('files_manager_dir') . '/' . $child->getPath();
+
+                if(is_file($path)) {
+                    unlink($path);
+                }
+
+                $entityManager->remove($child);
+            } else {
+                $this->removeFileItemChildren($child, $entityManager);
+            }
+        }
     }
 }
