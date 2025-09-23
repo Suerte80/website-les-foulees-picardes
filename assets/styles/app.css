@@ -1,3 +1,90 @@
-body {
-    background-color: skyblue;
+@import "tailwindcss";
+@source not "../../public/*";
+
+/* ===========================
+   Définition du thème
+   =========================== */
+@theme {
+    --color-sand:   #F6E6C8;
+    --color-ink:    #2B2B2B;
+    --color-card:   #D67543;
+    --color-accent: #2C7E7D;
+    --color-brand:  #F18F2F;
+
+    --shadow-soft: 0 10px 20px rgba(0,0,0,.18);
+}
+
+/* ===========================
+   Règles globales
+   =========================== */
+summary::-webkit-details-marker { display: none; }
+details > summary { list-style: none; }
+
+/* ===========================
+   Utilities custom
+   =========================== */
+@layer utilities {
+    .shadow-soft { box-shadow: var(--shadow-soft); }
+}
+
+/* ===========================
+   Components (widgets)
+   =========================== */
+@layer components {
+    /* ----- Boutons ----- */
+    .btn {
+        @apply inline-block px-6 py-3 rounded-full font-bold tracking-tight transition shadow-sm;
+    }
+    .btn-primary {
+        @apply bg-accent text-white hover:bg-accent/90 active:translate-y-0.5 shadow-md;
+    }
+    .btn-secondary {
+        @apply bg-white text-accent border border-accent hover:bg-accent hover:text-white;
+    }
+    .btn-sm { @apply text-sm px-4 py-2; }
+
+    /* ----- Cartes ----- */
+    .card {
+        @apply bg-card text-ink rounded-xl shadow-soft p-6 flex flex-col gap-4 h-full;
+    }
+    .card-title { @apply text-xl font-semibold; }
+    .card-meta { @apply text-sm opacity-90; }
+
+    /* ----- Hero ----- */
+    .hero {
+        @apply max-w-6xl mx-auto px-5 mt-12 grid md:grid-cols-2 gap-12 items-center;
+    }
+    .hero-media { @apply grid place-items-center; }
+    .hero-img {
+        @apply w-72 h-72 md:w-96 md:h-96 rounded-full shadow-soft object-cover;
+    }
+    .hero-card {
+        @apply bg-card rounded-2xl shadow-soft p-8;
+    }
+    .hero-title {
+        @apply text-4xl md:text-5xl font-extrabold text-ink;
+    }
+    .hero-sub {
+        @apply mt-2 mb-5 text-lg opacity-90;
+    }
+
+    /* ----- Accordéon (details/summary) ----- */
+    .accordion {
+        @apply bg-card rounded-xl shadow-soft overflow-hidden h-full;
+    }
+    .accordion summary {
+        @apply flex items-center justify-between cursor-pointer select-none px-6 py-5;
+    }
+    .accordion h3 {
+        @apply text-xl font-semibold m-0;
+    }
+    .accordion-arrow {
+        @apply inline-block font-black transition-transform duration-200;
+    }
+    details[open] .accordion-arrow {
+        @apply rotate-90;
+    }
+    .accordion-body {
+        @apply px-6 pb-6 text-sm opacity-90;
+    }
 }

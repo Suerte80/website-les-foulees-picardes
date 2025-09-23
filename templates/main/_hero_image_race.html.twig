@@ -1,0 +1,86 @@
+<div class="" >
+    <img
+        src="{{ asset('images/depart_course.jpeg') }}"
+        alt="Départ de la course"
+        class="absolute top-0 left-0 inset-0 object-cover overflow-visible inset-shadow-amber-100 mask-[url('../images/pontpoint_mask.svg')] mask-contain w-72 h-72 scale-[1.49] [mask-mode:luminance] hover:bg-transparent"
+    >
+
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="24 119 952 857"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label="Coureur qui court en cercle"
+        class="absolute inset-0 w-full h-full overflow-visible z-0 scale-150"
+        width="100"
+        height="100"
+    >
+        <title>Coureur qui court en cercle</title>
+        <style>
+            :root { --track:#000; --runner:#2C7E7D; --line:#f18f2f; }
+            .track { fill:none; stroke:var(--track); stroke-width:8; stroke-linecap:round; stroke-dasharray:6 10; opacity:.7 }
+            .white-line { fill:none; stroke:var(--line); stroke-width:4; stroke-linecap:round; stroke-dasharray:20 50; opacity:.7 }
+            .runner-stroke { stroke:var(--runner); stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; fill:none }
+            .head { fill:var(--runner) }
+        </style>
+
+        <!-- Piste -->
+        <path id="trackPathP" class="track"
+              d="M160.0 975.0 L174.0 934.0 L176.0 858.0 L171.0 823.0 L142.0 751.0 L116.0 714.0 L67.0 695.0 L44.0 650.0 L26.0 508.0 L57.0 487.0 L100.0 484.0 L128.0 460.0 L139.0 418.0 L138.0 379.0 L153.0 347.0 L181.0 312.0 L195.0 279.0 L259.0 237.0 L532.0 129.0 L581.0 132.0 L644.0 154.0 L720.0 166.0 L757.0 176.0 L793.0 195.0 L847.0 255.0 L882.0 278.0 L917.0 294.0 L953.0 302.0 L971.0 333.0 L943.0 403.0 L934.0 439.0 L904.0 460.0 L854.0 515.0 L836.0 548.0 L812.0 575.0 L772.0 588.0 L775.0 643.0 L768.0 684.0 L708.0 844.0 L705.0 885.0 L708.0 955.0 L555.0 968.0 L322.0 969.0 Z" />
+
+        <g id="second_road" transform="scale(1.2 1.2) translate(-75 -95)">
+            <path id="trackPathP" class="track"
+                  d="M160.0 975.0 L174.0 934.0 L176.0 858.0 L171.0 823.0 L142.0 751.0 L116.0 714.0 L67.0 695.0 L44.0 650.0 L26.0 508.0 L57.0 487.0 L100.0 484.0 L128.0 460.0 L139.0 418.0 L138.0 379.0 L153.0 347.0 L181.0 312.0 L195.0 279.0 L259.0 237.0 L532.0 129.0 L581.0 132.0 L644.0 154.0 L720.0 166.0 L757.0 176.0 L793.0 195.0 L847.0 255.0 L882.0 278.0 L917.0 294.0 L953.0 302.0 L971.0 333.0 L943.0 403.0 L934.0 439.0 L904.0 460.0 L854.0 515.0 L836.0 548.0 L812.0 575.0 L772.0 588.0 L775.0 643.0 L768.0 684.0 L708.0 844.0 L705.0 885.0 L708.0 955.0 L555.0 968.0 L322.0 969.0 Z" />
+        </g>
+
+        <g id="white-line" transform="scale(1.1 1.1) translate(-40 -50)">
+            <path id="trackPathP" class="white-line"
+                  d="M160.0 975.0 L174.0 934.0 L176.0 858.0 L171.0 823.0 L142.0 751.0 L116.0 714.0 L67.0 695.0 L44.0 650.0 L26.0 508.0 L57.0 487.0 L100.0 484.0 L128.0 460.0 L139.0 418.0 L138.0 379.0 L153.0 347.0 L181.0 312.0 L195.0 279.0 L259.0 237.0 L532.0 129.0 L581.0 132.0 L644.0 154.0 L720.0 166.0 L757.0 176.0 L793.0 195.0 L847.0 255.0 L882.0 278.0 L917.0 294.0 L953.0 302.0 L971.0 333.0 L943.0 403.0 L934.0 439.0 L904.0 460.0 L854.0 515.0 L836.0 548.0 L812.0 575.0 L772.0 588.0 L775.0 643.0 L768.0 684.0 L708.0 844.0 L705.0 885.0 L708.0 955.0 L555.0 968.0 L322.0 969.0 Z" />
+        </g>
+
+        <!-- Runner -->
+        <g id="runner" transform="translate(0,-40) scale(2.2)" >
+            <circle class="head" cx="0" cy="-10" r="3.2"/>
+            <path class="runner-stroke" d="M 0 -7 L 0 0" />
+            <g id="armL">
+                <path class="runner-stroke" d="M 0 -6 L -7 -1"/>
+                <animateTransform attributeName="transform" type="rotate"
+                                  values="20 0 -6; -20 0 -6; 20 0 -6"
+                                  dur="0.6s" repeatCount="indefinite"/>
+            </g>
+            <g id="armR">
+                <path class="runner-stroke" d="M 0 -6 L 7 -1"/>
+                <animateTransform attributeName="transform" type="rotate"
+                                  values="-20 0 -6; 20 0 -6; -20 0 -6"
+                                  dur="0.6s" repeatCount="indefinite"/>
+            </g>
+            <g id="legL">
+                <path class="runner-stroke" d="M 0 0 L -5 10"/>
+                <animateTransform attributeName="transform" type="rotate"
+                                  values="-25 0 0; 25 0 0; -25 0 0"
+                                  dur="0.6s" repeatCount="indefinite"/>
+            </g>
+            <g id="legR">
+                <path class="runner-stroke" d="M 0 0 L 5 10"/>
+                <animateTransform attributeName="transform" type="rotate"
+                                  values="25 0 0; -25 0 0; 25 0 0"
+                                  dur="0.6s" repeatCount="indefinite"/>
+            </g>
+
+            <animateTransform attributeName="transform" type="translate"
+                              additive="sum"
+                              values="0 0; 0 -0.8; 0 0; 0 0.8; 0 0"
+                              dur="0.6s" repeatCount="indefinite"/>
+
+            <animateTransform attributeName="transform" type="translate"
+                              additive="sum"
+                              values="0 0; 0 -0.8; 0 0; 0 0.8; 0 0"
+                              dur="0.6s" repeatCount="indefinite"/>
+
+            <animateMotion dur="10s" repeatCount="indefinite" rotate="auto">
+                <mpath xlink:href="#trackPathP"/>
+            </animateMotion>
+        </g>
+    </svg>
+</div>

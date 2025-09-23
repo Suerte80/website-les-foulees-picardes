@@ -1,0 +1,47 @@
+<section class="lg:grid lg:h-screen lg:place-content-center">
+
+    <div
+        class="mx-auto w-screen max-w-screen-xl px-4 py-16 sm:px-6 sm:py-24 md:grid md:grid-cols-2 md:items-center md:gap-4 lg:px-8 lg:py-32"
+    >
+        <div class="max-w-prose text-left
+                    ">
+            <h1 class=" text-4xl font-bold text-gray-900 sm:text-5xl
+                        before:content-[url('/images_test/logo.svg')]
+                        before:w-full before:h-full
+                        before:relative
+                        before:top-0
+                    before:absolute before:top-[-40px] before:left-0
+                    before:-translate-x-1/2
+                    before:w-16 before:h-16
+                        ">
+                Association <strong class="text-accent">pour la promotion et le développement</strong> de la course à pied.
+            </h1>
+
+            <p class="mt-4 text-base text-pretty text-gray-700 sm:text-lg/relaxed">
+                Ouverte à toutes et à tous, quel que soit l’âge ou le niveau, elle souhaite rassembler des passionnés de course, du coureur débutant au sportif confirmé, dans un esprit de convivialité, de partage et de dépassement de soi.
+            </p>
+
+            <div class="mt-4 flex gap-4 sm:mt-6">
+                <a
+                    class="inline-block rounded border btn-primary px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-accent-700"
+                    href="#"
+                >
+                    S'inscrire
+                </a>
+
+                <a
+                    class="inline-block rounded border btn-secondary px-5 py-3 font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-900"
+                    href="#"
+                >
+                    En apprendre plus sur nous
+                </a>
+            </div>
+        </div>
+
+        <div id="card" class="relative w-72 h-72 mx-auto hidden md:block">
+            {% include 'main/_hero_image_race.html.twig' %}
+        </div>
+
+
+    </div>
+</section>

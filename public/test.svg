@@ -1,0 +1,66 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="24 119 952 857"
+    preserveAspectRatio="xMidYMid meet"
+    role="img"
+    aria-label="Coureur qui court en cercle"
+    class="absolute inset-0 w-full h-full overflow-visible z-0 scale-150"
+    width="100"
+    height="100"
+>
+    <title>Coureur qui court en cercle</title>
+    <style>
+        :root { --track:#F18F2F; --runner:#2C7E7D; }
+        .track { fill:none; stroke:var(--track); stroke-width:5; stroke-linecap:round; stroke-dasharray:6 10; opacity:.7 }
+        .runner-stroke { stroke:var(--runner); stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; fill:none }
+        .head { fill:var(--runner) }
+    </style>
+
+    <!-- Piste -->
+    <path id="trackPathP" class="track"
+          d="M160.0 975.0 L174.0 934.0 L177.0 831.0 L158.0 804.0 L142.0 751.0 L98.0 687.0 L94.0 692.0 L67.0 695.0 L44.0 650.0 L24.0 481.0 L62.0 488.0 L91.0 487.0 L110.0 480.0 L125.0 464.0 L136.0 446.0 L139.0 374.0 L158.0 338.0 L186.0 306.0 L194.0 287.0 L195.0 269.0 L208.0 273.0 L218.0 266.0 L237.0 240.0 L259.0 237.0 L290.0 222.0 L532.0 129.0 L539.0 126.0 L542.0 119.0 L557.0 127.0 L603.0 138.0 L650.0 156.0 L731.0 168.0 L771.0 182.0 L793.0 195.0 L842.0 251.0 L882.0 278.0 L931.0 299.0 L976.0 306.0 L971.0 320.0 L975.0 320.0 L975.0 325.0 L971.0 333.0 L963.0 331.0 L961.0 336.0 L966.0 338.0 L955.0 349.0 L957.0 369.0 L945.0 378.0 L947.0 398.0 L944.0 397.0 L942.0 420.0 L937.0 421.0 L939.0 437.0 L913.0 438.0 L910.0 446.0 L904.0 447.0 L903.0 464.0 L892.0 466.0 L892.0 476.0 L884.0 479.0 L882.0 487.0 L861.0 487.0 L861.0 508.0 L848.0 523.0 L852.0 528.0 L841.0 535.0 L833.0 554.0 L818.0 571.0 L804.0 580.0 L785.0 581.0 L768.0 587.0 L775.0 669.0 L762.0 694.0 L745.0 750.0 L708.0 844.0 L694.0 862.0 L705.0 885.0 L724.0 890.0 L705.0 968.0 L322.0 969.0 Z" />
+    <!-- Runner -->
+    <g id="runner" transform="translate(0,-30) scale(2.2)" >
+        <circle class="head" cx="0" cy="-10" r="3.2"/>
+        <path class="runner-stroke" d="M 0 -7 L 0 0" />
+        <g id="armL">
+            <path class="runner-stroke" d="M 0 -6 L -7 -1"/>
+            <animateTransform attributeName="transform" type="rotate"
+                              values="20 0 -6; -20 0 -6; 20 0 -6"
+                              dur="0.6s" repeatCount="indefinite"/>
+        </g>
+        <g id="armR">
+            <path class="runner-stroke" d="M 0 -6 L 7 -1"/>
+            <animateTransform attributeName="transform" type="rotate"
+                              values="-20 0 -6; 20 0 -6; -20 0 -6"
+                              dur="0.6s" repeatCount="indefinite"/>
+        </g>
+        <g id="legL">
+            <path class="runner-stroke" d="M 0 0 L -5 10"/>
+            <animateTransform attributeName="transform" type="rotate"
+                              values="-25 0 0; 25 0 0; -25 0 0"
+                              dur="0.6s" repeatCount="indefinite"/>
+        </g>
+        <g id="legR">
+            <path class="runner-stroke" d="M 0 0 L 5 10"/>
+            <animateTransform attributeName="transform" type="rotate"
+                              values="25 0 0; -25 0 0; 25 0 0"
+                              dur="0.6s" repeatCount="indefinite"/>
+        </g>
+
+        <animateTransform attributeName="transform" type="translate"
+                          additive="sum"
+                          values="0 0; 0 -0.8; 0 0; 0 0.8; 0 0"
+                          dur="0.6s" repeatCount="indefinite"/>
+
+        <animateTransform attributeName="transform" type="translate"
+                          additive="sum"
+                          values="0 0; 0 -0.8; 0 0; 0 0.8; 0 0"
+                          dur="0.6s" repeatCount="indefinite"/>
+
+        <animateMotion dur="10s" repeatCount="indefinite" rotate="auto">
+            <mpath xlink:href="#trackPathP"/>
+        </animateMotion>
+    </g>
+</svg>

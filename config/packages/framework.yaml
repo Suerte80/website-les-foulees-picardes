@@ -14,6 +14,8 @@ framework:
     #esi: true
     #fragments: true
 
+    asset_mapper: { enabled: true }
+
 when@test:
     framework:
         test: true
