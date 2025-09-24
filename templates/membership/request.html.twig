@@ -3,14 +3,13 @@
 {% block title %}Demande d'adhésion{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<section class="flex flex-col w-full items-center p-4 gap-4">
+    <div class="section-card max-w-sm md:max-w-lg">
+        <h2 class="text-xl font-bold">Bienvenu, voici la demande d'adhésion ! ✅</h2>
 
-<div class="example-wrapper">
-    <h1>Bienvenu, voici la demande d'adhésion ! ✅</h1>
-
-    {{ form(form) }}
-</div>
+        <div class="">
+            {{ form(form) }}
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -87,4 +87,8 @@ details > summary { list-style: none; }
     .accordion-body {
         @apply px-6 pb-6 text-sm opacity-90;
     }
+
+    .section-card {
+        @apply relative w-full rounded-lg border border-amber-800/20 bg-card shadow-md p-6 sm:p-8 lg:p-10;
+    }
 }
