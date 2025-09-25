@@ -11,13 +11,8 @@
 </head>
 <body class="bg-sand text-ink flex flex-col min-h-screen">
 {# Flash messages #}
-{% for label, messages in app.flashes %}
-    {% for message in messages %}
-        <div class="max-w-3xl mx-auto my-3 p-3 rounded bg-white shadow">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endfor %}
+
+{% include 'partials/_flash.html.twig' %}
 
 {% include 'partials/_header.html.twig' %}
 

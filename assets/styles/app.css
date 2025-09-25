@@ -14,6 +14,11 @@
     --color-brand:  #F18F2F;
     --color-brand-hard: rgba(208, 116, 26, 0.98);
 
+    --color-flash-success: #3BA271;   /* vert feuille doux */
+    --color-flash-info:    #2C7E7D;   /* ton accent (turquoise profond) */
+    --color-flash-warning: #F18F2F;   /* ton brand orange chaleureux */
+    --color-flash-error:   #D64545;   /* rouge brique équilibré */
+
     --shadow-soft: 0 10px 20px rgba(0,0,0,.18);
 }
 

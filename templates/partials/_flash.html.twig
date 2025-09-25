@@ -1,0 +1,18 @@
+{# Flash messages #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="flash flex flex-row items-start fixed z-100 inset-0 top-2 max-w-screen w-fit h-fit mx-2 my-3 p-3 rounded bg-flash-{{ label }} shadow">
+            <p>{{ message }}</p>
+
+            <img
+                src="/images_svg/close_btn.svg"
+                alt="Bouton fermeture de la notification."
+                width="24" height="24"
+            >
+        </div>
+    {% endfor %}
+{% endfor %}
+
+{% if false %}
+    <div class="bg-flash-info bg-flash-success bg-flash-warning bg-flash-error hidden"></div>
+{% endif %}

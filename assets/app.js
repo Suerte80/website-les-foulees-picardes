@@ -10,4 +10,6 @@
 import './styles/app.css';
 
 // Import de l'asset js du contrôle de la navbar
-import './js/navbar.js'
+import './js/navbar.js';
+
+import './js/flash.js';
