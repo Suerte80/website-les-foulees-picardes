@@ -1,15 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% import 'macros/_section.html.twig' as ui %}
+
 {% block title %}Demande d'adhésion{% endblock %}
 
 {% block body %}
-<section class="flex flex-col w-full items-center p-4 gap-4">
-    <div class="section-card max-w-sm md:max-w-lg">
-        <h2 class="text-xl font-bold">Bienvenu, voici la demande d'adhésion ! ✅</h2>
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+            <h2 class="text-xl font-bold">Bienvenu, voici la demande d'adhésion ! ✅</h2>
 
-        <div class="">
-            {{ form(form) }}
-        </div>
-    </div>
-</section>
+            <div class="">
+                {{ form(form) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

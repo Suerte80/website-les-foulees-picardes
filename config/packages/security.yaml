@@ -20,11 +20,21 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
+                csrf_token_id: authenticate
+                username_parameter: login[username]
+                password_parameter: login[password]
+                #remember_me_parameter: login[rememberMe]
+                default_target_path: app_index
             user_checker: App\Security\UserChecker
             logout:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
+
+            # Anti brut-force
+            login_throttling:
+                max_attempts: 5
+                interval: '1 minute'
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

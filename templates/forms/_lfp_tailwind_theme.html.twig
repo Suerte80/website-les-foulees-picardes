@@ -38,7 +38,7 @@
 {# ===== WIDGET (inputs) ===== #}
 {% block form_widget_simple -%}
     {% set type = type|default('text') %}
-    {% set base = 'w-full rounded-t-sm border border-amber-700/30 bg-white/90
+    {% set base = 'w-full rounded-t-sm border border-amber-700/30 bg-sand-light/90
                  px-3 py-2 text-gray-900 shadow-sm
                  focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500
                  placeholder:text-gray-400' %}
@@ -49,7 +49,7 @@
 
 {# ===== TEXTAREA ===== #}
 {% block textarea_widget -%}
-    {% set class = (attr.class|default('') ~ ' w-full rounded-xl border border-amber-700/30 bg-white/90
+    {% set class = (attr.class|default('') ~ ' w-full rounded-t-xl border border-amber-700/30 bg-sand-light/90
                    px-3 py-2 text-gray-900 shadow-sm min-h-28
                    focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500
                    placeholder:text-gray-400')|trim %}
@@ -59,7 +59,7 @@
 
 {# ===== CHOICE (select) ===== #}
 {% block choice_widget_collapsed -%}
-    {% set class = (attr.class|default('') ~ ' w-full rounded-xl border border-amber-700/30 bg-white/90
+    {% set class = (attr.class|default('') ~ ' w-full rounded-xl border border-amber-700/30 bg-sand-light/90
                    px-3 py-2 text-gray-900 shadow-sm
                    focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500')|trim %}
     {% set attr = attr|merge({class: class}) %}
@@ -85,7 +85,7 @@
 {% block choice_widget_expanded -%}
     <div class="space-y-2">
         {% for child in form %}
-            <label class="flex items-center gap-3 rounded-xl border border-amber-700/30 bg-white/90 px-3 py-2 shadow-sm cursor-pointer">
+            <label class="flex items-center gap-3 rounded-xl border border-amber-700/30 bg-sand-light/90 px-3 py-2 shadow-sm cursor-pointer">
                 {{ form_widget(child) }}
                 <span class="text-gray-900 text-sm">{{ child.vars.label|trans({}, translation_domain) }}</span>
             </label>
@@ -95,7 +95,7 @@
 
 {# ===== ROW (label + widget + errors) ===== #}
 {% block form_row -%}
-    <div class="mb-4 p-2 bg-white rounded-t-sm">
+    <div class="mb-4 p-2 bg-sand rounded-t-sm">
         {{- form_label(form) -}}
         {{- form_widget(form) -}}
         {{- form_help(form) -}}
@@ -113,3 +113,12 @@
     {% set attr = attr|merge({class: class}) %}
     {{- parent() -}}
 {%- endblock %}
+
+{% block checkbox_row %}
+    <div class="flex gap-2 mb-4 p-2 bg-sand rounded-t-sm">
+        {{ form_widget(form) }}
+        {{ form_label(form) }}
+        {{ form_help(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
