@@ -11,18 +11,20 @@
                 aria-expanded="false"
                 aria-label="Ouvrir le menu"></button>
 
-        <!-- Liens desktop visibles à partir de lg -->
-        <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
-            hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
-           href="{{ path('app_membership_request') }}">
-            <span class="relative z-10">Adhérer à l'association</span>
-        </a>
+        {% if app.user is not defined %}
+            <!-- Liens desktop visibles à partir de lg -->
+            <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
+                hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
+               href="{{ path('app_membership_request') }}">
+                <span class="relative z-10">Adhérer à l'association</span>
+            </a>
 
-        <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
-            hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
-           href="{{ path('app_login') }}">
-            <span class="relative z-10">Connexion</span>
-        </a>
+            <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
+                hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
+               href="{{ path('app_login') }}">
+                <span class="relative z-10">Connexion</span>
+            </a>
+        {% endif %}
 
         <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
             hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
@@ -66,12 +68,15 @@
         </nav>
 
         <ol class="flex flex-col gap-1 px-4 pb-6">
-            <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
-                <a class="block text-left" href="{{ path('app_membership_request') }}">Adhérer à l'association</a>
-            </li>
-            <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
-                <a class="block text-left" href="{{ path('app_login') }}">Connexion</a>
-            </li>
+            {% if app.user is not defined %}
+                <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
+                    <a class="block text-left" href="{{ path('app_membership_request') }}">Adhérer à l'association</a>
+                </li>
+
+                <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
+                    <a class="block text-left" href="{{ path('app_login') }}">Connexion</a>
+                </li>
+            {% endif %}
             <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
                 <a class="block text-left" href="">Événements à venir</a>
             </li>
