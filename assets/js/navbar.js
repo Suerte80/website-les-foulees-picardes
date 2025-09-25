@@ -1,6 +1,6 @@
 const menuHamburger = document.querySelector('#hamburger-menu');
-const hamburger = document.querySelector('#hamburger');
-const panel = document.querySelector('#panel');
+const hamburger = document.querySelector('#hamburger-open');
+const panel = document.querySelector('#backdrop');
 
 const closeBtn = document.querySelector('.close-btn');
 

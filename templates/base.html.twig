@@ -30,5 +30,21 @@
 {% block javascripts %}
     {{ importmap('app') }}
 {% endblock %}
+
+<!-- Indicateur de breakpoint (copie-le proche de </body>) -->
+<div class="fixed bottom-10 right-2 z-[9999] pointer-events-none select-none">
+    <div
+        class="px-2 py-1 rounded-lg bg-black/70 text-white font-mono text-xs tracking-tight
+           after:inline-block
+           after:content-['xs_(<640px)']
+           sm:after:content-['sm_(≥640px)']
+           md:after:content-['md_(≥768px)']
+           lg:after:content-['lg_(≥1024px)']
+           xl:after:content-['xl_(≥1280px)']
+           2xl:after:content-['2xl_(≥1536px)']">
+    </div>
+</div>
+
+
 </body>
 </html>
