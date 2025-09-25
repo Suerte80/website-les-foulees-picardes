@@ -1,0 +1,34 @@
+<!-- Hamburger "lacets" — thème running -->
+<svg viewBox="0 0 48 48" role="img" aria-label="Menu hamburger en lacets"
+     xmlns="http://www.w3.org/2000/svg">
+    <title>Menu</title>
+    <style>
+        :root{
+        --lace:#1F2A44;      /* couleur lacet */
+        --eyelet:#0F172A;    /* couleur intérieur œillet */
+        --rim:#D1D5DB;       /* bordure œillet (métal) */
+        --aglet:#A3E635;     /* ferret (embout) façon running fluo */
+        }
+        .lace   { fill:none; stroke:var(--lace); stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round }
+        .eyelet { fill:var(--eyelet); stroke:var(--rim); stroke-width:1.5 }
+        .aglet  { fill:var(--aglet) }
+    </style>
+
+    <!-- Rangée 1 -->
+    <circle class="eyelet" cx="6"  cy="12" r="3"/>
+    <circle class="eyelet" cx="42" cy="12" r="3"/>
+    <!-- lacet avec légère courbe type “tendu” -->
+    <path class="lace" d="M9 12 C18 10, 30 10, 39 12"/>
+
+    <!-- Rangée 2 -->
+    <circle class="eyelet" cx="6"  cy="24" r="3"/>
+    <circle class="eyelet" cx="42" cy="24" r="3"/>
+    <!-- lacet croisé légèrement (petit S) -->
+    <path class="lace" d="M9 24 C18 26, 30 22, 39 24"/>
+
+    <!-- Rangée 3 -->
+    <circle class="eyelet" cx="6"  cy="36" r="3"/>
+    <circle class="eyelet" cx="42" cy="36" r="3"/>
+    <!-- lacet un peu relâché -->
+    <path class="lace" d="M9 36 C17 38.5, 31 33.5, 39 36"/>
+</svg>

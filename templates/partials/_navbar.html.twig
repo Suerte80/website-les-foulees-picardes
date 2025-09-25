@@ -1,0 +1,70 @@
+<nav class="w-screen mx-auto px-7 py-5 flex items-center gap-6 shadow-2xl" aria-label="Navigation principale">
+    <a class="flex items-center gap-3 tracking-tight" href="{{ path('app_index') }}" aria-label="Les Foulées Picardes">
+        <img src="/images_svg/logo_noir_navbar.svg" alt="Logo des Foulées Picardes" width="64" height="64" class="scale-150">
+        {#            <span class="text-2xl">Les Foulées Picardes</span>#}
+    </a>
+    <div class="ms-auto flex md:flex items-center gap-6 font-semibold">
+        {#            <a href="{{ path('app_index') }}" class="hover:underline">Accueil</a>#}
+        {#            #}{# <a href="{{ path('app_news') }}#actus" class="hover:underline">Actualités</a> #}
+        {#            #}{# <a href="{{ path('app_races') }}" class="hover:underline">Courses</a> #}
+        {#            #}{# <a href="{{ path('app_contact') }}" class="hover:underline">Contact</a> #}
+
+        {#            <a href="{{ path('app_login') }}">Se connecter</a>#}
+
+        <span id="hamburger" class="hamburger"></span>
+
+    </div>
+</nav>
+
+<div id="hamburger-menu"
+     class="bg-brand fixed inset-0 w-[75%] hidden transition-all duration-200">
+
+    <nav class="mx-auto w-full px-7 py-5 flex items-center gap-6" aria-label="Navigation principale">
+        <a class="flex items-center gap-3 tracking-tight" href="{{ path('app_index') }}" aria-label="Les Foulées Picardes">
+            <img src="/images_svg/logo_noir_navbar.svg" alt="Logo des Foulées Picardes" width="64" height="64" class="scale-150">
+            {#            <span class="text-2xl">Les Foulées Picardes</span>#}
+        </a>
+        <div class="ms-auto flex md:flex items-center gap-6 font-semibold">
+            {#            <a href="{{ path('app_index') }}" class="hover:underline">Accueil</a>#}
+            {#            #}{# <a href="{{ path('app_news') }}#actus" class="hover:underline">Actualités</a> #}
+            {#            #}{# <a href="{{ path('app_races') }}" class="hover:underline">Courses</a> #}
+            {#            #}{# <a href="{{ path('app_contact') }}" class="hover:underline">Contact</a> #}
+
+            {#            <a href="{{ path('app_login') }}">Se connecter</a>#}
+
+            <span id="hamburger" class="close-btn"></span>
+
+        </div>
+    </nav>
+
+    <ol class="flex flex-col justify-between items-center">
+        <li class="relative underline decoration-white/60 cursor-pointer w-full h-full text-xl font-bold p-2
+           before:content-[''] before:absolute before:inset-0 before:bg-transparent before:w-full
+           hover:before:bg-black/15">
+            <p class="text-left">Adhérer à l'association</p>
+        </li>
+        <li class="relative underline decoration-white/60 cursor-pointer w-full h-full text-xl font-bold p-2
+           before:content-[''] before:absolute before:inset-0 before:bg-transparent before:w-full
+           hover:before:bg-black/15">
+            <p class="text-left">Connexion</p>
+        </li>
+        <li class="relative underline decoration-white/60 cursor-pointer w-full h-full text-xl font-bold p-2
+           before:content-[''] before:absolute before:inset-0 before:bg-transparent before:w-full
+           hover:before:bg-black/15">
+            <p class="text-left">Événements à venir</p>
+        </li>
+        <li class="relative underline decoration-white/60 cursor-pointer w-full h-full text-xl font-bold p-2
+           before:content-[''] before:absolute before:inset-0 before:bg-transparent before:w-full
+           hover:before:bg-black/15">
+            <p class="text-left">Dernières sorties</p>
+        </li>
+        <li class="relative underline decoration-white/60 cursor-pointer w-full h-full text-xl font-bold p-2
+           before:content-[''] before:absolute before:inset-0 before:bg-transparent before:w-full
+           hover:before:bg-black/15">
+            <p class="text-left">Actualités</p>
+        </li>
+    </ol>
+
+    <div id="panel" class="content-[''] absolute bg-black/85 w-[35%]
+                top-0 right-[-35%] h-full"></div>
+</div>

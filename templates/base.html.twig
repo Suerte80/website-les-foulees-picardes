@@ -27,6 +27,8 @@
 
 {% include 'partials/_footer.html.twig' %}
 
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    {{ importmap('app') }}
+{% endblock %}
 </body>
 </html>

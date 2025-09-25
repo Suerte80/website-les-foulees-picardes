@@ -1,16 +1,5 @@
 <header class="sticky top-0 z-50 bg-brand shadow">
-    <nav class="max-w-6xl mx-auto px-5 py-3 flex items-center gap-6" aria-label="Navigation principale">
-        <a class="flex items-center gap-3 font-extrabold tracking-tight" href="{{ path('app_index') }}" aria-label="Les Foulées Picardes">
-            <span class="w-10 h-10 rounded-full bg-white/30 inline-block"></span>
-            <span class="text-lg">Les Foulées Picardes</span>
-        </a>
-        <div class="ms-auto hidden md:flex items-center gap-6 font-semibold">
-            <a href="{{ path('app_index') }}" class="hover:underline">Accueil</a>
-            {# <a href="{{ path('app_news') }}#actus" class="hover:underline">Actualités</a> #}
-            {# <a href="{{ path('app_races') }}" class="hover:underline">Courses</a> #}
-            {# <a href="{{ path('app_contact') }}" class="hover:underline">Contact</a> #}
+    {% include 'partials/_navbar.html.twig' %}
 
-            <a href="{{ path('app_login') }}">Se connecter</a>
-        </div>
-    </nav>
+
 </header>
