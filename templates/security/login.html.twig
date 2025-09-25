@@ -16,15 +16,15 @@
             {{ form_row(loginForm.password) }}
             {{ form_row(loginForm.rememberMe) }}
 
+            <p class="mt-3">
+                <a href="{{ path('app_forgot_password_request') }}" class="underline text-flash-info cursor-pointer">Mot de passe oublié ?</a>
+            </p>
+
             {# CSRF attendu par form_login (enable_csrf: true) #}
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
 
             <button class="btn btn-primary">Se connecter</button>
             {{ form_end(loginForm) }}
-
-            <p class="mt-3">
-                <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
-            </p>
         {% endblock %}
     {% endembed %}
 {% endblock %}
