@@ -3,8 +3,16 @@
 {% use 'form_div_layout.html.twig' %}
 
 {% block form_start -%}
-    {{- parent() -}}
+    {# Ajoute des classes au <form> #}
+    {% set attr = attr|merge({
+        class: (attr.class|default('') ~ ' mb-4 p-4 grid grid-cols-1 gap-2 w-full bg-sand rounded-t-sm shadow-md')|trim
+    }) %}
+    {{ parent() }}
 {%- endblock %}
+
+{% block form_end %}
+</div>
+{% endblock %}
 
 {# ===== LABEL ===== #}
 {% block form_label -%}
@@ -95,12 +103,12 @@
 
 {# ===== ROW (label + widget + errors) ===== #}
 {% block form_row -%}
-    <div class="mb-4 p-2 bg-sand rounded-t-sm shadow-md">
+{#    <div class="mb-4 p-2 bg-sand rounded-t-sm shadow-md">#}
         {{- form_label(form) -}}
         {{- form_widget(form) -}}
         {{- form_help(form) -}}
         {{- form_errors(form) -}}
-    </div>
+{#    </div>#}
 {%- endblock %}
 
 {# ===== SUBMIT BUTTON ===== #}
@@ -115,7 +123,7 @@
 {%- endblock %}
 
 {% block checkbox_row %}
-    <div class="flex gap-2 mb-4 p-2 bg-sand rounded-t-sm shadow-md">
+    <div class="flex gap-2">
         {{ form_widget(form) }}
         {{ form_label(form) }}
         {{ form_help(form) }}
