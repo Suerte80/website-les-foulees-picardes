@@ -11,7 +11,7 @@
                 aria-expanded="false"
                 aria-label="Ouvrir le menu"></button>
 
-        {% if app.user is not defined %}
+        {% if not app.user %}
             <!-- Liens desktop visibles à partir de lg -->
             <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
                 hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
@@ -68,7 +68,7 @@
         </nav>
 
         <ol class="flex flex-col gap-1 px-4 pb-6">
-            {% if app.user is not defined %}
+            {% if not app.user %}
                 <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
                     <a class="block text-left" href="{{ path('app_membership_request') }}">Adhérer à l'association</a>
                 </li>
