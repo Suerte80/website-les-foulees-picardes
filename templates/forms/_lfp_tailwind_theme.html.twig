@@ -95,7 +95,7 @@
 
 {# ===== ROW (label + widget + errors) ===== #}
 {% block form_row -%}
-    <div class="mb-4 p-2 bg-sand rounded-t-sm">
+    <div class="mb-4 p-2 bg-sand rounded-t-sm shadow-md">
         {{- form_label(form) -}}
         {{- form_widget(form) -}}
         {{- form_help(form) -}}
@@ -115,7 +115,7 @@
 {%- endblock %}
 
 {% block checkbox_row %}
-    <div class="flex gap-2 mb-4 p-2 bg-sand rounded-t-sm">
+    <div class="flex gap-2 mb-4 p-2 bg-sand rounded-t-sm shadow-md">
         {{ form_widget(form) }}
         {{ form_label(form) }}
         {{ form_help(form) }}

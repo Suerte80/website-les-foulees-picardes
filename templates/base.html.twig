@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
 </head>
-<body class="bg-sand text-ink">
+<body class="bg-sand text-ink flex flex-col min-h-screen">
 {# Flash messages #}
 {% for label, messages in app.flashes %}
     {% for message in messages %}
@@ -21,7 +21,7 @@
 
 {% include 'partials/_header.html.twig' %}
 
-<main class="min-h-dvh">
+<main class="flex-grow flex flex-col items-center justify-center p-4">
     {% block body %}{% endblock %}
 </main>
 
