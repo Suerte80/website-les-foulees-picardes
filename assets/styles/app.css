@@ -159,6 +159,52 @@ details > summary { list-style: none; }
     .peer:checked + .toggle {
         @apply bg-accent dark:bg-accent;
     }
+
+    .link {
+        @apply text-blue-500 transition-colors duration-200 hover:text-blue-700 hover:underline;
+    }
+
+    /* ----- Tableau générique ----- */
+    .table {
+        @apply min-w-full rounded-lg overflow-hidden shadow-soft font-sans text-sm;
+    }
+
+    .table thead {
+        background-color: var(--color-brand-hard);
+        color: var(--color-sand);
+    }
+
+    .table th {
+        @apply px-6 py-3 text-left font-semibold uppercase tracking-wide;
+    }
+
+    .table tbody {
+        background-color: var(--color-sand-light);
+        color: var(--color-ink);
+    }
+
+    .table tbody tr {
+        @apply transition;
+    }
+
+    .table tbody tr:hover {
+        background-color: var(--color-sand-darker);
+    }
+
+    .table td {
+        @apply px-6 py-4 align-middle;
+    }
+
+    .table a {
+        color: var(--color-accent);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .table a:hover {
+        text-decoration: underline;
+    }
+
 }
 
 @theme{

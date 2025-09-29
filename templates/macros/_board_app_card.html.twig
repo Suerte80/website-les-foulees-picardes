@@ -1,0 +1,7 @@
+<article class="card bg-sand-darker text-center hover:scale-105 transition duration-200">
+    <h2 class="card-title">{{ title|default('Titre') }}</h2>
+    <p>{{ content|default('Aucun contenu.') }}</p>
+    {% if link is defined %}
+        <a href="{{ link }}" class="link">{{ link_text|default('Lien') }}</a>
+    {% endif %}
+</article>

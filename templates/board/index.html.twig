@@ -3,18 +3,57 @@
 {% block title %}Hello BoardController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{#    {% embed 'macros/_section.html.twig' %}#}
+{#        {% block content %}#}
+            <h1 class="pb-4">Liste des applications disponibles&nbsp;:</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Lien</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if is_granted('ROLE_PRESIDENT') %}#}
+        {% elseif is_granted('ROLE_VICE_PRESIDENT') %}
+        {% elseif is_granted('ROLE_SECRETAIRE') %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/suerte80/Documents/formation/les_foulees_picardes/app/src/Controller/BoardController.php</code></li>
-        <li>Your template at <code>/home/suerte80/Documents/formation/les_foulees_picardes/app/templates/board/index.html.twig</code></li>
-    </ul>
-</div>
+            <tr>
+                <td>Adhésions</td>
+                <td>Validation des demandes d'adhésions</td>
+                <td><a href="{{ path('app_secretary_requests') }}">Lien</a></td>
+            </tr>
+
+        {% elseif is_granted('ROLE_TRESORIER') %}
+        {% elseif is_granted('ROLE_COM') %}
+        {% elseif is_granted('ROLE_VIE_ASSO') %}
+        {% elseif is_granted('ROLE_BUREAU') %}
+        {% endif %}
+        </tbody>
+    </table>
+
+
+
+    {#            <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 gap-4 items-center justify-center">#}
+{#                {% if is_granted('ROLE_PRESIDENT') %}#}
+{#                {% elseif is_granted('ROLE_VICE_PRESIDENT') %}#}
+{#                {% elseif is_granted('ROLE_SECRETAIRE') %}#}
+
+{#                    {% embed 'macros/_board_app_card.html.twig' with {#}
+{#                        title: 'Validation des demandes',#}
+{#                        content: 'Validations des demandes de d\'adhésions.',#}
+{#                        link: path('app_secretary_requests'),#}
+{#                        link_text: 'google'#}
+{#                    }%} {% endembed %}#}
+
+{#                {% elseif is_granted('ROLE_TRESORIER') %}#}
+{#                {% elseif is_granted('ROLE_COM') %}#}
+{#                {% elseif is_granted('ROLE_VIE_ASSO') %}#}
+{#                {% elseif is_granted('ROLE_BUREAU') %}#}
+{#                {% endif %}#}
+{#            </section>#}
+{#        {% endblock %}#}
+{#    {% endembed %}#}
 {% endblock %}
