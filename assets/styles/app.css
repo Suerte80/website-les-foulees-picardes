@@ -1,16 +1,18 @@
 @import "tailwindcss";
 @source not "../../public/*";
 
+@import url('font.css');
+
 /* ===========================
    Définition du thème
    =========================== */
 @theme {
-    --color-sand:   #F6E6C8;
+    --color-sand: #fbf5e9; /* F6E6C8 */
     --color-sand-light: #fbf5e9;
     --color-sand-darker: #f1d7a7;
     --color-ink:    #2B2B2B;
     --color-card:   #D67543;
-    --color-accent: #2C7E7D;
+    --color-accent: #2C7E7D; /* 2C7E7D */
     --color-brand:  #F18F2F;
     --color-brand-hard: rgba(208, 116, 26, 0.98);
 
@@ -20,6 +22,8 @@
     --color-flash-error:   #D64545;   /* rouge brique équilibré */
 
     --shadow-soft: 0 10px 20px rgba(0,0,0,.18);
+
+    --font-sans: 'Clear Sans', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ===========================
@@ -44,10 +48,10 @@ details > summary { list-style: none; }
         @apply inline-block px-6 py-3 rounded-full font-bold tracking-tight transition shadow-sm;
     }
     .btn-primary {
-        @apply bg-accent text-white hover:bg-accent/90 active:translate-y-0.5 shadow-md;
+        @apply bg-brand text-ink hover:bg-brand/90 active:translate-y-0.5 shadow-md;
     }
     .btn-secondary {
-        @apply bg-white text-accent border border-accent hover:bg-accent hover:text-white;
+        @apply bg-white text-accent border border-brand hover:bg-accent hover:text-white;
     }
     .btn-sm { @apply text-sm px-4 py-2; }
 
