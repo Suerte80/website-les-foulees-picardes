@@ -45,7 +45,7 @@ details > summary { list-style: none; }
 @layer components {
     /* ----- Boutons ----- */
     .btn {
-        @apply inline-block px-6 py-3 rounded-full font-bold tracking-tight transition shadow-sm;
+        @apply px-6 py-3 rounded-full font-bold tracking-tight transition shadow-sm;
     }
     .btn-primary {
         @apply bg-brand text-ink hover:bg-brand/90 active:translate-y-0.5 shadow-md;
@@ -54,6 +54,19 @@ details > summary { list-style: none; }
         @apply bg-white text-accent border border-brand hover:bg-accent hover:text-white;
     }
     .btn-sm { @apply text-sm px-4 py-2; }
+
+    /* ----- Titres ----- */
+    h1 {
+        @apply text-2xl text-center font-bold;
+    }
+
+    h2 {
+        @apply text-xl text-justify;
+    }
+
+    h3 {
+        @apply text-sm font-bold;
+    }
 
     /* ----- Cartes ----- */
     .card {
@@ -113,6 +126,38 @@ details > summary { list-style: none; }
         @apply inline-block w-10 h-10; /* taille du bouton */
         background: no-repeat center/contain url("/images_svg/close_btn.svg");
         color: #1f2937; /* gris Tailwind gray-800 */
+    }
+
+    /********************************************
+     ***** Rêgles CSS pour le bouton TOGGLE *****
+     ********************************************/
+
+    /* Track (fond) */
+    .toggle {
+        @apply relative h-6 w-20 rounded-full bg-gray-200 dark:bg-gray-700 text-white transition-colors;
+    }
+
+    /* Thumb (rond blanc) */
+    .toggle::after {
+        content: '';
+        @apply absolute top-[2px] start-[2px] h-5 w-5 rounded-full
+        bg-white border border-gray-300 dark:border-gray-600 transition-all;
+    }
+
+    /* Ring sur le thumb (équivalent de ring-4 ring-blue-500/50) */
+    .peer:focus + .toggle::after {
+        box-shadow: 0 0 0 4px rgb(59 130 246 / 0.5);
+    }
+
+    /* Quand checked → déplacement du thumb */
+    .peer:checked + .toggle::after {
+        left: calc(100% - 2px - 1.25rem); /* largeur totale - marge - largeur du thumb */
+        @apply border-white;
+    }
+
+    /* Quand checked → couleur du track */
+    .peer:checked + .toggle {
+        @apply bg-accent dark:bg-accent;
     }
 }
 

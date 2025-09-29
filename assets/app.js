@@ -13,3 +13,5 @@ import './styles/app.css';
 import './js/navbar.js';
 
 import './js/flash.js';
+
+import './js/member.js';

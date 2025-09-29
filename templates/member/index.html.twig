@@ -3,54 +3,113 @@
 {% block title %}Hello MemberController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+            <div class="flex flex-col gap-4">
+                <div class="flex flex-row justify-between w-full">
+                    <h1>Bonjour {{ app.user.firstname }} &nbsp;!</h1>
 
-<div class="example-wrapper">
-    <h1>Bonjour {{ app.user.firstname }}! ✅</h1>
+                    <div class="flex flex-row items-center gap-2">
+                        <span class="font-ink text-sm font-medium">Editer&nbsp;:</span>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input id="btn-edit" type="checkbox" value="" class="sr-only peer">
+                            <div class="toggle flex items-center justify-center text-center text-2xl select-none">&#9998;</div>
+                        </label>
+                    </div>
 
-    <section id="section-readable">
-        <h2>Vos informations personnelles :</h2>
-        <ul>
-            {% if app.user.avatarFilename %}
-                <li>
-                    <img src="{{ asset('uploads/avatars/' ~ app.user.avatarFilename) }}" alt="Avatar de {{ app.user.firstname ~ ' ' ~ app.user.lastname }}" width="100" height="100">
-                </li>
-            {% else %}
-                <li>
-                    <img src="{{ asset('uploads/avatars/default_avatar.png') }}" alt="Avatar de {{ app.user.firstname ~ ' ' ~ app.user.lastname }}" width="100" height="100">
-                </li>
-            {% endif %}
-            <li>Prénom: {{ app.user.firstname }}</li>
-            <li>Nom: {{ app.user.lastname }}</li>
-            <li>Email: {{ app.user.email }}</li>
-            <li>Adresse: {{ app.user.address }}</li>
-            <li>Numéro de téléphone: {{ app.user.phone }}</li>
-            <li>Status de l'inscription: {{ app.user.membershipStatus }}</li>
-            <li>L'inscription expire à: {{ app.user.membershipExpiresAt|date('d/m/Y') }}</li>
-            <li>Dernière mise à jour: {{ app.user.updatedAt|date('d/m/Y') }}</li>
-        </ul>
-    </section>
+                </div>
 
-    <section id="section-editable" style="display: none;">
-        {{ form_start(form) }}
-            {{ form_row(form.avatar) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.firstname) }}
-            {{ form_row(form.lastname) }}
-            {{ form_row(form.address) }}
-            {{ form_row(form.dateOfBirth) }}
-            {{ form_row(form.phone) }}
-            <a href="{{ path('app_member_change_password') }}">Cliquez ici pour modifier votre mot de passe.</a>
-        {{ form_end(form) }}
+                <section id="section-readable">
+                    <h2>Vos informations personnelles :</h2>
+                    <ul class="flex flex-col gap-2">
+                        <li>
+                            <div class="flex flex-row items-center">
+                                <p class="font-bold">Avatar:</p>
+                                <div class="w-full text-right">
+                                    {% if app.user.avatarFilename %}
+                                        <img src="{{ asset('uploads/avatars/' ~ app.user.avatarFilename) }}"
+                                             alt="Avatar de {{ app.user.firstname ~ ' ' ~ app.user.lastname }}"
+                                             width="100" height="100"
+                                             class="inline-block rounded-full">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/avatars/default_avatar.png') }}"
+                                             alt="Avatar de {{ app.user.firstname ~ ' ' ~ app.user.lastname }}"
+                                             width="100" height="100"
+                                             class="inline-block rounded-full">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
 
-        <form action="{{ path('app_member_avatar_delete') }}" method="post">
-            <button type="submit">Supprimer votre avatar</button>
-        </form>
-    </section>
+                        <li>
+                            <div class="flex flex-row">
+                                <p class="font-bold w-full">Prénom:</p>
+                                <p class="w-full text-right">{{ app.user.firstname }}</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex flex-row">
+                                <p class="font-bold w-full">Nom:</p>
+                                <p class="w-full text-right">{{ app.user.lastname }}</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex flex-row">
+                                <p class="font-bold w-full">Email:</p>
+                                <p class="w-full text-right">{{ app.user.email }}</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex flex-row">
+                                <p class="font-bold w-full">Adresse:</p>
+                                <p class="w-full text-right">{{ app.user.address }}</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex flex-row">
+                                <p class="font-bold w-full">Numéro de téléphone:</p>
+                                <p class="w-full text-right">{{ app.user.phone }}</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex flex-row">
+                                <p class="font-bold w-full">Status de l'inscription:</p>
+                                <p class="w-full text-right">{{ app.user.membershipStatus }}</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex flex-row">
+                                <p class="font-bold w-full">L'inscription expire à:</p>
+                                <p class="w-full text-right">{{ app.user.membershipExpiresAt|date('d/m/Y') }}</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex flex-row">
+                                <p class="font-bold w-full">Dernière mise à jour:</p>
+                                <p class="w-full text-right">{{ app.user.updatedAt|date('d/m/Y') }}</p>
+                            </div>
+                        </li>
 
-    <button id="btn-edit">Éditer</button>
-</div>
+                    </ul>
+                </section>
+
+                <section id="section-editable" class="hidden">
+                    {{ form_start(form) }}
+                        {{ form_row(form.avatar) }}
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.firstname) }}
+                        {{ form_row(form.lastname) }}
+                        {{ form_row(form.address) }}
+                        {{ form_row(form.dateOfBirth) }}
+                        {{ form_row(form.phone) }}
+                        <a href="{{ path('app_member_change_password') }}" class="btn btn-secondary underline text-red-700">Cliquez ici pour modifier votre mot de passe.</a>
+                        {{ form_row(form.submit) }}
+                    {{ form_end(form) }}
+                    <form action="{{ path('app_member_avatar_delete') }}" method="post">
+                        <button id="btn-delete-avatar" type="submit" class="btn btn-secondary hidden">Supprimer votre avatar</button>
+                    </form>
+                </section>
+            </div>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
