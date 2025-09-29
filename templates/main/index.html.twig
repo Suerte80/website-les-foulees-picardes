@@ -7,48 +7,41 @@
     {% include 'main/_hero.html.twig' %}
 
     <!-- BOXES details/summary -->
-    <section aria-labelledby="infos" class="max-w-6xl mx-auto px-5 mt-10 mb-16">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-            <!-- Actus -->
-            <details id="actus" class="group bg-card rounded-xl shadow-soft h-full overflow-hidden" open>
-                <summary class="flex items-center justify-between gap-4 cursor-pointer select-none px-6 py-5">
-                    <h3 class="m-0 text-xl font-semibold">Dernières actualités</h3>
-                    <span class="inline-block font-black transition-transform duration-200 group-open:rotate-90">›</span>
-                </summary>
-                <div class="px-6 pb-6">
-                    <p class="text-sm opacity-95">
-                        {{ lastNewsTeaser|default('Annonce des 10 km — nouveau parcours, bénévoles recherchés…') }}
-                    </p>
-                </div>
-            </details>
+    <section aria-labelledby="infos" class="w-full max-w-6xl mx-auto px-5 mt-10 mb-16">
+        <div class="grid grid-cols-1 lg:w-auto gap-6 items-stretch">
 
-            <!-- Sorties longues -->
-            <details id="sorties" class="group bg-card rounded-xl shadow-soft h-full overflow-hidden" open>
-                <summary class="flex items-center justify-between gap-4 cursor-pointer select-none px-6 py-5">
-                    <h3 class="m-0 text-xl font-semibold">Sorties longue dimanche</h3>
-                    <span class="inline-block font-black transition-transform duration-200 group-open:rotate-90">›</span>
-                </summary>
-                <div class="px-6 pb-6">
-                    <p class="text-sm opacity-95">
-                        {{ sundayRunText|default('RDV 9h au parking du bois, 18 km allure tranquille, ravito au km 10.') }}
-                    </p>
-                </div>
-            </details>
+            <!-- Actus -->
+            {% embed 'macros/_details_main_page.html.twig' with{
+                id: 'actus',
+                title: 'Dernières actualités',
+                content: lastNewsTeaser|default('Annonce des 10 km — nouveau parcours, bénévoles recherchés…'),
+                link: '#',
+            } %}
+            {% endembed %}
+
+            <!-- Sorties longues (mise en avant légère en lg) -->
+
+            {% embed 'macros/_details_main_page.html.twig' with{
+                id: 'sorties',
+                title: 'Sorties longue dimanche',
+                content: sundayRunText|default('RDV 9h au parking du bois, 18 km allure tranquille, ravito au km 10.'),
+                link: '#',
+                link_text: 'Voir le détail'
+            } %}
+            {% endembed %}
 
             <!-- Prochaine course -->
-            <details id="courses" class="group bg-card rounded-xl shadow-soft h-full overflow-hidden" open>
-                <summary class="flex items-center justify-between gap-4 cursor-pointer select-none px-6 py-5">
-                    <h3 class="m-0 text-xl font-semibold">Prochaine course</h3>
-                    <span class="inline-block font-black transition-transform duration-200 group-open:rotate-90">›</span>
-                </summary>
-                <div class="px-6 pb-6 space-y-3">
-                    <div class="text-sm opacity-95">
-                        {{ nextRace.name|default('Relais de l’Oise') }} — {{ nextRace.date|default('5 juin 2025') }}
-                    </div>
-                    {# <a class="inline-block bg-white text-accent font-extrabold rounded-full px-4 py-2 shadow-[0_6px_0_rgba(0,0,0,0.18)] active:translate-y-0.5"
-            href="{{ path('app_race_register', {slug: nextRace.slug|default('relais-de-loise')}) }}">S’inscrire</a> #}
-                </div>
-            </details>
+            {% embed 'macros/_details_main_page.html.twig' with{
+                id: 'course',
+                title: 'Prochaine course',
+                content: nextRace.name|default('Relais de l’Oise') ~ '-' ~ nextRace.date|default('5 juin 2025'),
+                link: '#',
+                link_text: 'S\'inscrire',
+                button: 1
+            } %}
+            {% endembed %}
+
         </div>
     </section>
+
 {% endblock %}

@@ -1,0 +1,16 @@
+<details id="{{ id|default('id_details') }}" class="info-box" open>
+    <summary>
+        <h3>{{ title|default('Title') }}</h3>
+        <span class="info-box__chev">›</span>
+    </summary>
+    <div class="info-box__body">
+        <p>{{ content|default('Text content') }}</p>
+        {% if link is defined and button is not defined %}
+            <a href="{{ link }}" class="link font-semibold">{{ link_text|default('Lien') }} →</a>
+        {% endif %}
+
+        {% if button is defined and link is defined and link_text is defined  %}
+            <a href="{{ link }}" class="btn btn-secondary">{{ link_text }}</a>
+        {% endif %}
+    </div>
+</details>

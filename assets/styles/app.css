@@ -205,6 +205,45 @@ details > summary { list-style: none; }
         text-decoration: underline;
     }
 
+    /* ===========================
+   INFO BOX
+   =========================== */
+    .info-box {
+        @apply rounded-2xl shadow-soft overflow-hidden h-full
+        border border-amber-800/20 transition will-change-transform;
+        background: linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--color-card) 92%, white 8%),
+            var(--color-card)
+        );
+    }
+
+    .info-box:hover {
+        @apply -translate-y-1 shadow-lg;
+    }
+
+    .info-box summary {
+        @apply flex items-center justify-between gap-4 cursor-pointer select-none px-6 py-5;
+        border-bottom: 1px dashed color-mix(in oklab, var(--color-ink) 20%, transparent);
+    }
+
+    .info-box h3 {
+        @apply m-0 text-xl font-semibold;
+    }
+
+    .info-box__chev {
+        @apply inline-block font-black transition-transform duration-200 opacity-80;
+    }
+
+    /* Quand le <details> est ouvert → rotation du chevron */
+    details.info-box[open] .info-box__chev {
+        @apply rotate-90;
+    }
+
+    .info-box__body {
+        @apply px-6 pb-6 text-sm opacity-95 space-y-3;
+    }
+
 }
 
 @theme{
