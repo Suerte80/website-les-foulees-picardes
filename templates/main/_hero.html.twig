@@ -1,11 +1,11 @@
-<section class="lg:grid lg:h-screen lg:place-content-center">
+<section class="lg:grid lg:place-content-center">
 
     <div
         class="grid grid-col-1 justify-center mx-auto w-screen max-w-screen-xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:grid-cols-2 lg:items-center lg:gap-4 lg:px-8 lg:py-16"
     >
         <div class="max-w-prose text-left font-bold">
             <img src="/images_svg/logo_noir_test_2.svg" alt="Logo des foulées picardes.">
-            <h1 class=" text-4xl text-gray-900 sm:text-5xl">
+            <h1 class=" text-4xl text-left text-gray-900 sm:text-5xl">
                 Association <strong class="text-brand underline font-bold">pour la promotion et le développement</strong> de la course à pied.
             </h1>
 
@@ -16,7 +16,7 @@
             <div class="mt-4 flex gap-4 sm:mt-6">
                 <a
                     class="inline-block rounded border btn-primary px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-accent-700"
-                    href="#"
+                    href="{{ path('app_membership_request') }}"
                 >
                     S'inscrire
                 </a>
