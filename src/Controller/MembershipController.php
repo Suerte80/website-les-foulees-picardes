@@ -25,9 +25,7 @@ final class MembershipController extends AbstractController
     #[Route('/', name: 'app_membership')]
     public function index(): Response
     {
-        return $this->render('membership/index.html.twig', [
-            'controller_name' => 'MembershipController',
-        ]);
+        return $this->redirectToRoute('app_membership_request');
     }
 
     #[Route('/request', name: 'app_membership_request')]
