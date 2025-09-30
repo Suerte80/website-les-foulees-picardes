@@ -13,6 +13,21 @@
     {% endfor %}
 {% endfor %}
 
+{# C'est pour que tailwindcss compile les classes utile pour les flashes. #}
 {% if false %}
     <div class="bg-flash-info bg-flash-success bg-flash-warning bg-flash-error hidden"></div>
 {% endif %}
+
+{# Template de la flash #}
+<template id="flash-message">
+    {# Ne pas oublié de rajouter bg-flash-{{ label }} #}
+    <div class="flash flex flex-row items-start fixed z-100 inset-0 top-2 max-w-screen w-fit h-fit mx-2 my-3 p-3 rounded shadow">
+        <p>Message ici</p>
+
+        <img
+            src="/images_svg/close_btn.svg"
+            alt="Bouton fermeture de la notification."
+            width="24" height="24"
+        >
+    </div>
+</template>
