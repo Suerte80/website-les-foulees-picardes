@@ -1,21 +1,123 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Règlement intérieur - Les Foulées Picardes{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
 
-    <div class="example-wrapper">
-        <h1>Réglement intérieurs</h1>
+            <article class="reglement-interieur">
+                <h1 class="underline">RÈGLEMENT INTÉRIEUR DE L’ASSOCIATION « Les Foulées Picardes »</h1>
 
-        <ul>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-        </ul>
-    </div>
+                <section id="article-1" class="article">
+                    <h2>Article 1 – Objet</h2>
+                    <p>
+                        L’association « Les Foulées Picardes » a pour mission d’organiser des manifestations sportives, des entraînements
+                        et des activités de course à pied accessibles à tous les niveaux, dans un esprit convivial et inclusif.
+                    </p>
+                </section>
+
+                <section id="article-2" class="article">
+                    <h2>Article 2 – Adhésion et cotisation</h2>
+
+                    <h3>Conditions d’adhésion</h3>
+                    <ol>
+                        <li>Toute personne souhaitant devenir membre doit remplir un bulletin d’adhésion et s’acquitter de la cotisation annuelle fixée par l’Assemblée Générale.</li>
+                        <li>L’association accepte les membres mineurs sous justificatif parental. L’âge minimum pour intégrer l’association est fixé à 16 ans révolus.</li>
+                    </ol>
+
+                    <h3>Adhésion des membres</h3>
+                    <p>Toute personne souhaitant intégrer l’association doit s’acquitter d’un montant de zéro euro.</p>
+
+                    <h3>Durée de l’adhésion</h3>
+                    <p>Une adhésion d’un membre dure une année civile révolue.</p>
+
+                    <h3>Droits des membres</h3>
+                    <p>Chaque membre bénéficie d’un accès aux événements organisés par l’association, ainsi qu’à l’ensemble des activités prévues dans le cadre des entraînements ou manifestations.</p>
+
+                    <h3>Obligations des membres</h3>
+                    <p>Les membres s’engagent à respecter le présent règlement intérieur et les décisions prises par les instances dirigeantes de l’association.</p>
+                </section>
+
+                <section id="article-3" class="article">
+                    <h2>Article 3 – Organisation des activités</h2>
+
+                    <h3>Calendrier</h3>
+                    <p>Les activités et manifestations sportives sont planifiées par le Conseil d’Administration, suite à un vote.</p>
+
+                    <h3>Participation aux activités</h3>
+                    <ol>
+                        <li>Les membres doivent s’inscrire préalablement pour participer aux événements nécessitant une organisation particulière.</li>
+                        <li>Un membre peut choisir de participer aux activités, de faire partie des bénévoles veillant au bon déroulement de l’activité ou, le cas échéant, de ne pas y prendre part.</li>
+                    </ol>
+
+                    <h3>Respect des règles de sécurité</h3>
+                    <p>Chaque participant doit respecter les consignes de sécurité données avant et pendant les événements. Le port d’équipements adaptés (chaussures de sport, tenue de course) est obligatoire.</p>
+                </section>
+
+                <section id="article-4" class="article">
+                    <h2>Article 4 – Responsabilité</h2>
+
+                    <h3>Assurance</h3>
+                    <p>L’association souscrit une assurance responsabilité civile pour couvrir les risques liés à ses activités.</p>
+                    <p>Les membres sont responsables de leur propre assurance individuelle pour la pratique de la course à pied.</p>
+
+                    <h3>Engagement personnel</h3>
+                    <p>Les membres participent aux activités sous leur propre responsabilité et s’engagent à respecter leur condition physique pour les épreuves proposées.</p>
+                </section>
+
+                <section id="article-5" class="article">
+                    <h2>Article 5 – Fonctionnement financier</h2>
+
+                    <h3>Gestion des finances</h3>
+                    <p>Les finances de l’association sont gérées par le Trésorier sous le contrôle du Président et de l’Assemblée Générale.</p>
+
+                    <h3>Remboursements sur justificatifs</h3>
+                    <p>
+                        Les membres du Conseil d’Administration, et en particulier le Trésorier, peuvent être remboursés des frais engagés pour l’association
+                        (déplacements, achats de matériel, frais administratifs) sur présentation des justificatifs correspondants (factures, tickets, etc.).
+                        Ces remboursements doivent être validés par le Président ou, en son absence, par un autre membre du Bureau.
+                    </p>
+                </section>
+
+                <section id="article-6" class="article">
+                    <h2>Article 6 – Assemblée Générale</h2>
+
+                    <h3>Convocation et déroulement</h3>
+                    <p>L’Assemblée Générale ordinaire se tient une fois par an pour valider le rapport moral, le rapport financier et définir les orientations de l’association.</p>
+
+                    <h3>Droit de vote</h3>
+                    <p>Chaque membre à jour de sa cotisation dispose d’une voix. Les décisions sont prises à la majorité des suffrages exprimés.</p>
+                </section>
+
+                <section id="article-7" class="article">
+                    <h2>Article 7 – Modification du règlement intérieur</h2>
+                    <p>Le présent règlement intérieur peut être modifié par l’Assemblée Générale à la majorité absolue des membres présents ou représentés.</p>
+                </section>
+
+                <section id="article-8" class="article">
+                    <h2>Article 8 – Exclusion</h2>
+
+                    <h3>Motifs d’exclusion</h3>
+                    <p>Un membre peut être exclu pour non-respect des statuts ou du règlement intérieur, comportement contraire à l’esprit de l’association, ou tout autre motif grave.</p>
+
+                    <h3>Procédure</h3>
+                    <p>L’exclusion est prononcée par le Conseil d’Administration après avoir entendu le membre concerné.</p>
+                </section>
+
+                <section id="signatures" class="article">
+                    <p>
+                        Fait à Pontpoint, le <time datetime="2024-12-07">07/12/2024</time>
+                    </p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        <p><strong>Signé par le Président :</strong> Samon Mickaël</p>
+                        <p><strong>Signé par le Secrétaire :</strong> Samon Mickaël</p>
+                        <p><strong>Signé par le Vice-Président :</strong> Courtin Alexis</p>
+                        <p><strong>Signé par le Trésorier :</strong> Courtin Alexis</p>
+                    </div>
+                </section>
+            </article>
+
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

@@ -116,8 +116,9 @@ details > summary { list-style: none; }
     .accordion-body {
         @apply px-6 pb-6 text-sm opacity-90;
     }
+
     .section-card {
-        @apply relative w-full rounded-lg border border-amber-800/20 bg-card shadow-md p-6 sm:p-8 lg:p-10;
+        @apply relative w-full lg:min-w-4xl rounded-lg border border-amber-800/20 bg-card text-ink shadow-md p-6 sm:p-8 lg:p-10;
     }
 
     .hamburger {
@@ -246,6 +247,27 @@ details > summary { list-style: none; }
 
     .info-box__body {
         @apply px-6 pb-6 text-sm opacity-95 space-y-3;
+    }
+
+    /* Règlement intérieur */
+    .reglement-interieur {
+        @apply flex flex-col gap-6;
+    }
+
+    .article{
+        @apply flex flex-col gap-4;
+    }
+
+    .article > h2 {
+        @apply font-bold text-xl;
+    }
+
+    .article > h3 {
+        @apply font-bold text-lg;
+    }
+
+    .article > ol {
+        @apply flex flex-col gap-2;
     }
 
 }

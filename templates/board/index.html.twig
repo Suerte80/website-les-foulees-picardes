@@ -3,9 +3,7 @@
 {% block title %}Hello BoardController!{% endblock %}
 
 {% block body %}
-{#    {% embed 'macros/_section.html.twig' %}#}
-{#        {% block content %}#}
-            <h1 class="pb-4">Liste des applications disponibles&nbsp;:</h1>
+    <h1 class="pb-4">Liste des applications disponibles&nbsp;:</h1>
 
     <table class="table">
         <thead>
@@ -33,27 +31,4 @@
         {% endif %}
         </tbody>
     </table>
-
-
-
-    {#            <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 gap-4 items-center justify-center">#}
-{#                {% if is_granted('ROLE_PRESIDENT') %}#}
-{#                {% elseif is_granted('ROLE_VICE_PRESIDENT') %}#}
-{#                {% elseif is_granted('ROLE_SECRETAIRE') %}#}
-
-{#                    {% embed 'macros/_board_app_card.html.twig' with {#}
-{#                        title: 'Validation des demandes',#}
-{#                        content: 'Validations des demandes de d\'adhésions.',#}
-{#                        link: path('app_secretary_requests'),#}
-{#                        link_text: 'google'#}
-{#                    }%} {% endembed %}#}
-
-{#                {% elseif is_granted('ROLE_TRESORIER') %}#}
-{#                {% elseif is_granted('ROLE_COM') %}#}
-{#                {% elseif is_granted('ROLE_VIE_ASSO') %}#}
-{#                {% elseif is_granted('ROLE_BUREAU') %}#}
-{#                {% endif %}#}
-{#            </section>#}
-{#        {% endblock %}#}
-{#    {% endembed %}#}
 {% endblock %}
