@@ -30,7 +30,7 @@ class AppFixtures extends Fixture
     {
         $admin = $manager->find(Member::class, 16);
 
-        for ($i = 0; $i < 20; ++$i) {
+        for ($i = 0; $i < 5; ++$i) {
             $member = new Member();
             $member->setEmail($this->faker->email());
             $member->setPassword($this->passwordHasher->hashPassword($member, $this->faker->password()));

@@ -39,7 +39,9 @@ final class SecretaryController extends AbstractController
 
         $entityManager->flush();
 
-        return new Response('OK', Response::HTTP_OK);
+        return $this->json(
+            ['ok' => true, 'id' => $membershipRequest->getId(), 'status' => 'validated']
+        );
     }
 
     #[Route('/membership/requests/{id}', name: 'reject', methods: ['POST'])]
@@ -56,6 +58,8 @@ final class SecretaryController extends AbstractController
 
         $entityManager->flush();
 
-        return new Response('OK', Response::HTTP_OK);
+        return $this->json(
+            ['ok' => true, 'id' => $membershipRequest->getId(), 'status' => 'rejected']
+        );
     }
 }

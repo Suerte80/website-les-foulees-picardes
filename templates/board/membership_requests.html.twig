@@ -22,7 +22,7 @@
 
             <tbody>
             {% for membership_request in membership_requests %}
-                <tr>
+                <tr id="row-{{ membership_request.id }}">
                     <th>{{ membership_request.requester.firstname }}</th>
                     <th>{{ membership_request.requester.lastname }}</th>
                     <th>{{ membership_request.requester.email }}</th>
@@ -30,21 +30,41 @@
                     <th>{{ membership_request.requester.dateOfBirth|date('d/m/Y') }}</th>
                     <th>{{ membership_request.createdAt|date('d/m/Y h:m') }}</th>
                     <th class="flex flex-row gap-1">
-                        <form action="{{ path('app_secretary_validate', {id: membership_request.id}) }}" method="POST">
-                            <button type="submit" class="btn btn-secondary">Valider</button>
-                        </form>
+{#                        <form action="{{ path('app_secretary_validate', {id: membership_request.id}) }}" method="POST">#}
+                            <button
+                                type="submit"
+                                class="btn btn-secondary btn-validate bg-accent text-white"
+                                data-id="{{ membership_request.id }}"
+                                data-url="{{ path('app_secretary_validate', { id: membership_request.id }) }}"
+                                data-token="{{ csrf_token('validate' ~ membership_request.id) }}"
+                                data-rowsel="#row-{{ membership_request.id }}"
+                            >Valider</button>
+{#                        </form>#}
 
                         <form action="{{ path('app_secretary_reject', {id: membership_request.id}) }}" method="POST">
-                            <button type="submit" class="btn btn-cancel">Rejeter</button>
+                            <button
+                                type="submit"
+                                class="btn btn-cancel"
+                                data-id="{{ membership_request.requester.id }}"
+                                data-url="{{ path('app_secretary_reject', { id: membership_request.id }) }}"
+                                data-token="{{ csrf_token('reject' ~ membership_request.id) }}"
+                                data-rowsel="#row-{{ membership_request.id }}"
+                            >Rejeter</button>
                         </form>
                     </th>
                 </tr>
             {% else %}
                 <tr>
-                    <th colspan="6">Aucune requête en attente.</th>
+                    <th colspan="100%">Aucune requête en attente.</th>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <template id="empty-table-template">
+        <tr>
+            <th colspan="100%">Aucune requête en attente.</th>
+        </tr>
+    </template>
 {% endblock %}
