@@ -89,7 +89,7 @@
                                                     {% else %}
                                                         <a href="{{ path('app_files_upload') }}" class="btn btn-primary btn-sm">📤 Téléverser un fichier</a>
                                                     {% endif %}
-                                                    <a id="create-dir" href="#create-dir" class="btn btn-secondary btn-sm">＋ Créer un dossier</a>
+                                                    <a id="create-dir-button" href="#create-dir" class="btn btn-secondary btn-sm">＋ Créer un dossier</a>
                                                 </div>
                                             </div>
                                         </details>
@@ -102,7 +102,7 @@
                 </div>
 
                 {# Création de dossier #}
-                <section id="create-dir" class="rounded-xl border border-amber-800/20 bg-white/70 p-4 sm:p-6">
+                <section id="create-dir" class="rounded-xl border border-amber-800/20 bg-white/70 p-4 sm:p-6" data-ajax>
                     <h3 class="mb-3">Créer un dossier {% if parent is defined and parent is not null %}dans « {{ parent.name }} »{% else %}à la racine{% endif %}</h3>
                     <form id="create-form-dir" action="{{ path('app_files_create_directory') }}" method="post" class="grid gap-3 sm:grid-cols-[1fr_auto]">
                         <input type="hidden" name="_token" value="{{ csrf_token('create_dir_root') }}">

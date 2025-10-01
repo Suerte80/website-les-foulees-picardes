@@ -165,7 +165,7 @@ final class FileController extends AbstractController
         $name = $request->request->get('name');
         $parentId = $request->request->get('parent_id');
 
-        if(isEmpty($name)){
+        if(empty($name)){
             return $this->json([
                 'status' => 'error',
                 'message' => 'Please enter a name'
