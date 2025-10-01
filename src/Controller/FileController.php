@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use function PHPUnit\Framework\isEmpty;
 
 #[Route('/files', name: 'app_files_')]
 #[IsGranted('ROLE_BUREAU')]
@@ -163,6 +164,13 @@ final class FileController extends AbstractController
     {
         $name = $request->request->get('name');
         $parentId = $request->request->get('parent_id');
+
+        if(isEmpty($name)){
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Please enter a name'
+            ]);
+        }
 
         if($parentId != null){
             $parent = $entityManager->getRepository(FileItem::class)->find($parentId);

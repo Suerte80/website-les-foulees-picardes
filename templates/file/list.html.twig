@@ -4,80 +4,120 @@
 {% block title %}Gestion des fichiers{% endblock %}
 
 {% block body %}
-    <div class="example-wrapper">
-        <h1>Gestion des fichiers</h1>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Taille</th>
-                    <th>Créer le</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for file in files %}
-                <tr>
-                    {% if file.isFile %}
-                        <td><a href="{{ path('app_files_download', {id: file.id}) }}">{{ file.name }}</a></td>
-                        <td>{{ file.size }} Octets</td>
-                        <td>{{ file.createdAt|date('D M Y') }}</td>
-                        <td>
-                            <form action="{{ path('app_files_delete', {id: file.id}) }}" method="POST">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete_dir') }}">
-                                <input type="hidden" name="_method" value="delete">
-                                <input type="hidden" name="id" value="{{ file.id }}">
-                                <input type="submit" value="Supprimer">
-                            </form>
-                        </td>
-                    {% elseif file.isFolder %}
-                        <td><a href="{{ path('app_files_list_dir', {id: file.id}) }}">{{ file.name }}</a></td>
-                        <td>DIR</td>
-                        <td>{{ file.createdAt|date('D M Y') }}</td>
-                        <td>
-                            <form action="{{ path('app_files_delete', {id: file.id}) }}" method="POST">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete_dir') }}">
-                                <input type="hidden" name="_method" value="delete">
-                                <input type="hidden" name="id" value="{{ file.id }}">
-                                <input type="submit" value="Supprimer">
-                            </form>
-                        </td>
-                    {% endif %}
-                </tr>
-            {% else %}
-                <tr aria-colspan="3">Aucun fichier</tr>
-            {% endfor %}
-            </tbody>
-        </table>
+            <section class="section-card bg-white space-y-6">
 
-        {% if prev_dir_id is defined and prev_dir_id is not null %}
-            <a href="{{ path('app_files_list_dir', {id: prev_dir_id}) }}">Précédent</a>
-        {% else %}
-            <a href="{{ path('app_files_list') }}">Précédent</a>
-        {% endif %}
-        <a href="{{ path('app_files_list') }}">Racine</a>
+                {# Header + actions #}
+                <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <h1 class="m-0">Gestion des fichiers</h1>
 
-        <hr>
+                    <nav class="flex flex-wrap items-center gap-2">
+                        {% if prev_dir_id is defined and prev_dir_id is not null %}
+                            <a href="{{ path('app_files_list_dir', {id: prev_dir_id}) }}" class="btn btn-secondary btn-sm">← Précédent</a>
+                        {% else %}
+                            <a href="{{ path('app_files_list') }}" class="btn btn-secondary btn-sm">← Précédent</a>
+                        {% endif %}
+                        <a href="{{ path('app_files_list') }}" class="btn btn-secondary btn-sm">⟲ Racine</a>
 
-        {# Créer un dossier #}
-        <h3>Créer un dossier à la racine</h3>
-        <form action="{{ path('app_files_create_directory') }}" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token('create_dir_root') }}">
-            {% if parent is defined and parent is not null %}
-                <input type="hidden" name="parent_id" value="{{ parent.id }}">
-            {% endif %}
-            <label for="name_root">Nom :</label>
-            <input type="text" id="name_root" name="name" required>
-            <button type="submit">Créer</button>
-        </form>
+                        {# Lien upload (même place que la nav pour l’avoir sous la main) #}
+                        {% if parent is defined and parent is not null %}
+                            <a href="{{ path('app_files_upload', {id: parent.id}) }}" class="btn btn-primary btn-sm">📤 Téléverser</a>
+                        {% else %}
+                            <a href="{{ path('app_files_upload') }}" class="btn btn-primary btn-sm">📤 Téléverser</a>
+                        {% endif %}
+                    </nav>
+                </header>
 
-        <hr>
+                {# Tableau #}
+                <div class="overflow-x-auto rounded-lg">
+                    <table class="table min-w-full">
+                        <thead>
+                        <tr>
+                            <th class="w-[45%]">Nom</th>
+                            <th class="w-[15%]">Taille</th>
+                            <th class="w-[20%]">Créé le</th>
+                            <th class="w-[20%] text-right">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for file in files %}
+                            <tr>
+                                {% if file.isFile %}
+                                    <td>
+                                        <a class="link" href="{{ path('app_files_download', {id: file.id}) }}">📄 {{ file.name }}</a>
+                                    </td>
+                                    <td>{{ file.size }} Octets</td>
+                                    <td>{{ file.createdAt|date('d/m/Y') }}</td>
+                                    <td class="text-right">
+                                        <form action="{{ path('app_files_delete', {id: file.id}) }}" method="POST" class="inline-block">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete_dir') }}">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="id" value="{{ file.id }}">
+                                            <button type="submit" class="btn btn-cancel btn-sm">Supprimer</button>
+                                        </form>
+                                    </td>
+                                {% elseif file.isFolder %}
+                                    <td>
+                                        <a class="link" href="{{ path('app_files_list_dir', {id: file.id}) }}">📁 {{ file.name }}</a>
+                                    </td>
+                                    <td>DIR</td>
+                                    <td>{{ file.createdAt|date('d/m/Y') }}</td>
+                                    <td class="text-right">
+                                        <form action="{{ path('app_files_delete', {id: file.id}) }}" method="POST" class="inline-block">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete_dir') }}">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="id" value="{{ file.id }}">
+                                            <button type="submit" class="btn btn-cancel btn-sm">Supprimer</button>
+                                        </form>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">
+                                    <div class="info-box">
+                                        <details class="info-box" open>
+                                            <summary>
+                                                <h3 class="m-0">Aucun fichier</h3>
+                                                <span class="info-box__chev">›</span>
+                                            </summary>
+                                            <div class="info-box__body">
+                                                <p>Il n’y a encore rien ici. Crée un dossier ou téléverse un fichier pour commencer.</p>
+                                                <div class="flex flex-wrap gap-2">
+                                                    {% if parent is defined and parent is not null %}
+                                                        <a href="{{ path('app_files_upload', {id: parent.id}) }}" class="btn btn-primary btn-sm">📤 Téléverser un fichier</a>
+                                                    {% else %}
+                                                        <a href="{{ path('app_files_upload') }}" class="btn btn-primary btn-sm">📤 Téléverser un fichier</a>
+                                                    {% endif %}
+                                                    <a id="create-dir" href="#create-dir" class="btn btn-secondary btn-sm">＋ Créer un dossier</a>
+                                                </div>
+                                            </div>
+                                        </details>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
-        {% if parent is defined and parent is not null %}
-            <a href="{{ path('app_files_upload', {id: parent.id}) }}">📤 Téléverser un fichier</a>
-        {% else %}
-            <a href="{{ path('app_files_upload') }}">📤 Téléverser un fichier</a>
-        {% endif %}
-    </div>
+                {# Création de dossier #}
+                <section id="create-dir" class="rounded-xl border border-amber-800/20 bg-white/70 p-4 sm:p-6">
+                    <h3 class="mb-3">Créer un dossier {% if parent is defined and parent is not null %}dans « {{ parent.name }} »{% else %}à la racine{% endif %}</h3>
+                    <form id="create-form-dir" action="{{ path('app_files_create_directory') }}" method="post" class="grid gap-3 sm:grid-cols-[1fr_auto]">
+                        <input type="hidden" name="_token" value="{{ csrf_token('create_dir_root') }}">
+                        {% if parent is defined and parent is not null %}
+                            <input type="hidden" name="parent_id" value="{{ parent.id }}">
+                        {% endif %}
+
+                        <label class="sr-only" for="name_root">Nom</label>
+                        <input
+                            class="rounded-lg border border-amber-800/20 bg-white px-4 py-2 outline-none focus:ring-4 focus:ring-brand/30"
+                            type="text" id="name_root" name="name" placeholder="Nouveau dossier" required>
+                        <button type="submit" class="btn btn-secondary">Créer</button>
+                    </form>
+                </section>
+
+            </section>
+
 {% endblock %}

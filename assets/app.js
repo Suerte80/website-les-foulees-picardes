@@ -17,3 +17,5 @@ import './js/flash.js';
 import './js/member.js';
 
 import './js/secretary_request.js';
+
+import './js/files_list.js';

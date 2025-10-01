@@ -33,7 +33,7 @@
 {#                        <form action="{{ path('app_secretary_validate', {id: membership_request.id}) }}" method="POST">#}
                             <button
                                 type="submit"
-                                class="btn btn-secondary btn-validate bg-accent text-white"
+                                class="btn btn-secondary btn-validate btn-validate-request bg-accent text-white"
                                 data-id="{{ membership_request.id }}"
                                 data-url="{{ path('app_secretary_validate', { id: membership_request.id }) }}"
                                 data-token="{{ csrf_token('validate' ~ membership_request.id) }}"
@@ -44,7 +44,7 @@
                         <form action="{{ path('app_secretary_reject', {id: membership_request.id}) }}" method="POST">
                             <button
                                 type="submit"
-                                class="btn btn-cancel"
+                                class="btn btn-cancel btn-cancel-request"
                                 data-id="{{ membership_request.requester.id }}"
                                 data-url="{{ path('app_secretary_reject', { id: membership_request.id }) }}"
                                 data-token="{{ csrf_token('reject' ~ membership_request.id) }}"

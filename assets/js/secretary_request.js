@@ -1,6 +1,6 @@
-const rejectButtons = document.querySelectorAll('.btn-cancel');
+const rejectButtons = document.querySelectorAll('.btn-cancel-request');
 
-const validateButtons = document.querySelectorAll('.btn-validate');
+const validateButtons = document.querySelectorAll('.btn-validate-request');
 
 if(validateButtons.length > 0){
     sendFormRequest(validateButtons)
@@ -16,8 +16,6 @@ function sendFormRequest(buttons, isReject = false)
 
         button.addEventListener('click', async (e) => {
             e.preventDefault();
-
-            console.log('OK');
 
             // Récupération des éléments dans le dataset du bouton.
             const url = button.dataset.url;

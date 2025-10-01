@@ -40,7 +40,7 @@ export function createFlashMessage(message, level = 'info')
     setTimeout(() => {
         if(flashMessage)
             flashMessage.remove();
-    }, 5000);
+    }, 500);
 
     // Ajout de du message flash dans le conteneur.
     const flashContainer = document.getElementById('flash-container');
