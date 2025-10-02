@@ -140,7 +140,7 @@ final class FileController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete', methods: ['DELETE'])]
-    public function delete(FileItem $fileItem, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, FileItem $fileItem, EntityManagerInterface $entityManager, FileItemRepository $itemRepository): Response
     {
         $haveParent = $fileItem->getParent() != null;
         if($haveParent) $parentId = $fileItem->getParent()->getId() ?? '';
@@ -158,7 +158,19 @@ final class FileController extends AbstractController
         $entityManager->remove($fileItem);
         $entityManager->flush();
 
-        if($haveParent){
+        if($this->isTurboFrame($request, 'files-frame')){
+
+            if($fileItem->getParent() != null)
+                $filesToRender = $fileItem->getParent()->getChildren();
+            else
+                $filesToRender = $itemRepository->findBy(['parent' => null]);
+
+            return $this->render('file/_files_list_frame.html.twig', [
+                'files' => $filesToRender,
+                'parent' => $fileItem->getParent(),
+                'depth' => 1
+            ]);
+        } elseif($haveParent){
             return $this->redirectToRoute('app_files_list_dir', [
                 'id' => $parentId
             ]);
@@ -261,5 +273,10 @@ final class FileController extends AbstractController
                 $this->removeFileItemChildren($child, $entityManager);
             }
         }
+    }
+
+    private function isTurboFrame(Request $request, string $expectingId): bool
+    {
+        return $request->headers->get('Turbo-Frame') === $expectingId;
     }
 }
