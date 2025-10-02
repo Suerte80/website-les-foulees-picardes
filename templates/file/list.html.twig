@@ -28,46 +28,48 @@
                     </nav>
                 </header>
 
-                <turbo-frame
-                    id="files-frame"
-                    src="{{ path(parent ? 'app_files_list_dir' : 'app_files_list', parent ? { id: parent.id, turbo: 1 } : { turbo: 1 }) }}"
-                    data-reload-url="{{ path(parent ? 'app_files_list_dir' : 'app_files_list', parent ? { id: parent.id, turbo: 1 } : { turbo: 1 }) }}"
-                >
-                    <div class="overflow-x-auto rounded-lg">
-                        <table class="table min-w-full">
-                            <thead>
-                            <tr>
-                                <th class="w-[45%]">Nom</th>
-                                <th class="w-[15%]">Taille</th>
-                                <th class="w-[20%]">Créé le</th>
-                                <th class="w-[20%] text-right">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td colspan="100%" class="text-center">... Chargement...</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </turbo-frame>
+                <div class="flex flex-col gap-4">
+                    <turbo-frame
+                        id="files-frame"
+                        src="{{ path(parent ? 'app_files_list_dir' : 'app_files_list', parent ? { id: parent.id, turbo: 1 } : { turbo: 1 }) }}"
+                        data-reload-url="{{ path(parent ? 'app_files_list_dir' : 'app_files_list', parent ? { id: parent.id, turbo: 1 } : { turbo: 1 }) }}"
+                    >
+                        <div class="overflow-x-auto rounded-lg">
+                            <table class="table min-w-full">
+                                <thead>
+                                <tr>
+                                    <th class="w-[45%]">Nom</th>
+                                    <th class="w-[15%]">Taille</th>
+                                    <th class="w-[20%]">Créé le</th>
+                                    <th class="w-[20%] text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td colspan="100%" class="text-center">... Chargement...</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </turbo-frame>
 
-                {# Création de dossier #}
-                <section id="create-dir" class="rounded-xl border border-amber-800/20 bg-white/70 p-4 sm:p-6">
-                    <h3 class="mb-3">Créer un dossier {% if parent is defined and parent is not null %}dans « {{ parent.name }} »{% else %}à la racine{% endif %}</h3>
-                    <form id="create-form-dir" action="{{ path('app_files_create_directory') }}" method="post" class="grid gap-3 sm:grid-cols-[1fr_auto]" data-ajax>
-                        <input type="hidden" name="_token" value="{{ csrf_token('create_dir_root') }}">
-                        {% if parent is defined and parent is not null %}
-                            <input type="hidden" name="parent_id" value="{{ parent.id }}">
-                        {% endif %}
+                    {# Création de dossier #}
+                    <section id="create-dir" class="rounded-xl border border-amber-800/20 bg-white/70 p-4 sm:p-6">
+                        <h3 class="mb-3">Créer un dossier {% if parent is defined and parent is not null %}dans « {{ parent.name }} »{% else %}à la racine{% endif %}</h3>
+                        <form id="create-form-dir" action="{{ path('app_files_create_directory') }}" method="post" class="grid gap-3 sm:grid-cols-[1fr_auto]" data-ajax>
+                            <input type="hidden" name="_token" value="{{ csrf_token('create_dir_root') }}">
+                            {% if parent is defined and parent is not null %}
+                                <input type="hidden" name="parent_id" value="{{ parent.id }}">
+                            {% endif %}
 
-                        <label class="sr-only" for="name_root">Nom</label>
-                        <input
-                            class="rounded-lg border border-amber-800/20 bg-white px-4 py-2 outline-none focus:ring-4 focus:ring-brand/30"
-                            type="text" id="name_root" name="name" placeholder="Nouveau dossier" required>
-                        <button type="submit" class="btn btn-secondary">Créer</button>
-                    </form>
-                </section>
+                            <label class="sr-only" for="name_root">Nom</label>
+                            <input
+                                class="rounded-lg border border-amber-800/20 bg-white px-4 py-2 outline-none focus:ring-4 focus:ring-brand/30"
+                                type="text" id="name_root" name="name" placeholder="Nouveau dossier" required>
+                            <button type="submit" class="btn btn-secondary">Créer</button>
+                        </form>
+                    </section>
+                </div>
 
             </section>
 
