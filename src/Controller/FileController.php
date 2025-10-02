@@ -67,12 +67,21 @@ final class FileController extends AbstractController
     }
 
     #[Route('/', name: 'list')]
-    public function list(FileItemRepository $repo): Response
+    public function list(Request $request, FileItemRepository $repo): Response
     {
         $depth = 3;
+        $files = $repo->findRootsWithChildren($depth);
+
+        if($request->query->has('turbo')){
+            return $this->render('file/_files_list_frame.html.twig', [
+                'files' => $files,
+                'parent' => null,
+                'depth' => $depth
+            ]);
+        }
 
         return $this->render('file/list.html.twig', [
-            'files' => $repo->findRootsWithChildren($depth),
+            'files' => $files,
             'parent' => null,
             'depth' => $depth,
             'prev_dir_id' => null,
@@ -80,23 +89,23 @@ final class FileController extends AbstractController
     }
 
     #[Route('/{id}', name: 'list_dir')]
-    public function listSubDir(FileItem $fileItem, FileItemRepository $repo): Response
+    public function listSubDir(Request $request, FileItem $fileItem): Response
     {
-        // Vérification que c'est bien un dossier
-        if($fileItem->isFolder()){
-            return $this->render('file/list.html.twig', [
-                'files' => $fileItem->getChildren(),
-                'parent' => $fileItem,
+        $isFolder = $fileItem->isFolder();
+
+        if ($request->query->has('turbo')) {
+            return $this->render('file/_files_list_frame.html.twig', [
+                'files' => $isFolder ? $fileItem->getChildren() : $fileItem->getChildren(),
+                'parent' => $isFolder ? $fileItem : null,
                 'depth' => 1,
-                'prev_dir_id' => ($fileItem->getParent()!=null)? $fileItem->getParent()->getId(): null,
             ]);
         }
 
-        $children = $fileItem->getChildren();
         return $this->render('file/list.html.twig', [
-            'files' => $children,
+            'files' => $isFolder ? $fileItem->getChildren() : $fileItem->getChildren(),
+            'parent' => $isFolder ? $fileItem : null,
             'depth' => 1,
-            'prev_dir_id' => null,
+            'prev_dir_id' => $isFolder && $fileItem->getParent() ? $fileItem->getParent()->getId() : null,
         ]);
     }
 

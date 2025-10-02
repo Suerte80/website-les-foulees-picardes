@@ -1,0 +1,76 @@
+{# Tableau #}
+<turbo-frame
+    id="files-frame"
+>
+    <div class="overflow-x-auto rounded-lg">
+        <table class="table min-w-full">
+            <thead>
+            <tr>
+                <th class="w-[45%]">Nom</th>
+                <th class="w-[15%]">Taille</th>
+                <th class="w-[20%]">Créé le</th>
+                <th class="w-[20%] text-right">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for file in files %}
+                <tr>
+                    {% if file.isFile %}
+                        <td>
+                            <a class="link" href="{{ path('app_files_download', {id: file.id}) }}">📄 {{ file.name }}</a>
+                        </td>
+                        <td>{{ file.size }} Octets</td>
+                        <td>{{ file.createdAt|date('d/m/Y') }}</td>
+                        <td class="text-right">
+                            <form action="{{ path('app_files_delete', {id: file.id}) }}" method="POST" data-turbo="false" class="inline-block">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_dir') }}">
+                                <input type="hidden" name="_method" value="delete">
+                                <input type="hidden" name="id" value="{{ file.id }}">
+                                <button type="submit" class="btn btn-cancel btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    {% elseif file.isFolder %}
+                        <td>
+                            <a class="link" href="{{ path('app_files_list_dir', {id: file.id}) }}">📁 {{ file.name }}</a>
+                        </td>
+                        <td>DIR</td>
+                        <td>{{ file.createdAt|date('d/m/Y') }}</td>
+                        <td class="text-right">
+                            <form action="{{ path('app_files_delete', {id: file.id}) }}" method="POST" data-turbo="false" class="inline-block">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_dir') }}">
+                                <input type="hidden" name="_method" value="delete">
+                                <input type="hidden" name="id" value="{{ file.id }}">
+                                <button type="submit" class="btn btn-cancel btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">
+                        <div class="info-box">
+                            <details class="info-box" open>
+                                <summary>
+                                    <h3 class="m-0">Aucun fichier</h3>
+                                    <span class="info-box__chev">›</span>
+                                </summary>
+                                <div class="info-box__body">
+                                    <p>Il n’y a encore rien ici. Crée un dossier ou téléverse un fichier pour commencer.</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        {% if parent is defined and parent is not null %}
+                                            <a href="{{ path('app_files_upload', {id: parent.id}) }}" class="btn btn-primary btn-sm">📤 Téléverser un fichier</a>
+                                        {% else %}
+                                            <a href="{{ path('app_files_upload') }}" class="btn btn-primary btn-sm">📤 Téléverser un fichier</a>
+                                        {% endif %}
+                                        <a id="create-dir-button" href="#create-dir" class="btn btn-secondary btn-sm">＋ Créer un dossier</a>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</turbo-frame>

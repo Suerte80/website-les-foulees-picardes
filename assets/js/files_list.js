@@ -70,8 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 createFlashMessage('Dossier créer', 'info');
                 formCreateDir.reset();
 
+                const frame = document.querySelector('turbo-frame#files-frame');
+                if(frame){
+                    const url = new URL(frame.src, window.location.origin);
+                    url.searchParams.set('_ts', Date.now().toString());
+                    frame.src = url.pathname + url.search;
+                }
+
             } catch (err){
-                createFlashMessage('error', 'Impossible de créer le dossier.');
+                createFlashMessage('Impossible de créer le dossier.', 'error');
                 console.error(err);
             } finally {
                 btn?.removeAttribute('disabled');
