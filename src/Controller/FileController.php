@@ -25,9 +25,13 @@ final class FileController extends AbstractController
     #[Route('/upload/{id?}', name: 'upload')]
     public function upload(?FileItem $parent, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createFormBuilder()
+        $form = $this->createFormBuilder(null, [
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'csrf_token_id'   => 'upload_form', // identifiant stable
+        ])
             ->add('file', FileType::class, [
-                'mapped' => false
+                'mapped' => false,
             ])
             ->getForm();
 
