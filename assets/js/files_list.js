@@ -1,5 +1,7 @@
 import {createFlashMessage} from './flash.js';
 
+console.log('Test2');
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const createDirBtn = document.querySelector('#create-dir-button');
@@ -8,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(createDirBtn){
         createDirBtn.addEventListener('click', (e) => {
+            debugger;
+
             e.preventDefault();
 
             const createDirForm = document.querySelector('#create-form-dir');
@@ -18,16 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             createDirForm.querySelector('input[name="name"]').value = input;
 
-            createDirForm.submit();
+            createDirForm.requestSubmit();
 
             createDirBtn?.removeAttribute('disabled');
         });
     }
 
     if(formCreateDir){
+
         // Partie pour la reception de l'event de submit du formulaire de création de dossier
         formCreateDir.addEventListener('submit', async (e) => {
-            if(!formCreateDir.matches['form[data-ajax]'])
+
+            if(!formCreateDir.matches('form[data-ajax]'))
                 return;
 
             e.preventDefault();
@@ -61,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Succés
-                createFlashMessage('info', 'Dossier créer avec succé.');
+                createFlashMessage('Dossier créer', 'info');
                 formCreateDir.reset();
 
             } catch (err){
