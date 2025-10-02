@@ -1,6 +1,7 @@
 {# Tableau #}
 <turbo-frame
     id="files-frame"
+    data-reload-url="{{ path(parent ? 'app_files_list_dir' : 'app_files_list', parent ? { id: parent.id, turbo: 1 } : { turbo: 1 }) }}"
 >
     <div class="overflow-x-auto rounded-lg">
         <table class="table min-w-full">
@@ -72,7 +73,7 @@
                                         {% else %}
                                             <a href="{{ path('app_files_upload') }}" class="btn btn-primary btn-sm">📤 Téléverser un fichier</a>
                                         {% endif %}
-                                        <a id="create-dir-button" href="#create-dir" class="btn btn-secondary btn-sm">＋ Créer un dossier</a>
+                                        <a id="create-dir-button" href="#create-dir" data-turbo="false" class="btn btn-secondary btn-sm">＋ Créer un dossier</a>
                                     </div>
                                 </div>
                             </details>

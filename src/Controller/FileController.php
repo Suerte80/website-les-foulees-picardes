@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use function PHPUnit\Framework\isEmpty;
 
 #[Route('/files', name: 'app_files_')]
 #[IsGranted('ROLE_BUREAU')]

@@ -4,28 +4,30 @@ console.log('Test2');
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const createDirBtn = document.querySelector('#create-dir-button');
-
     const formCreateDir = document.querySelector('#create-form-dir');
 
-    if(createDirBtn){
-        createDirBtn.addEventListener('click', (e) => {
-            debugger;
+    const turboFrame = document.querySelector('#files-frame');
 
-            e.preventDefault();
+    if(turboFrame){
 
-            const createDirForm = document.querySelector('#create-form-dir');
+        turboFrame.addEventListener('click', (e) => {
+            if(e.target.matches('#create-dir-button')){
 
-            createDirBtn?.setAttribute('disabled', 'disabled');
+                e.preventDefault();
 
-            const input = prompt('Nom du répertoire :');
+                const createDirBtn = document.getElementById('create-dir-button');
 
-            createDirForm.querySelector('input[name="name"]').value = input;
+                createDirBtn?.setAttribute('disabled', 'disabled');
 
-            createDirForm.requestSubmit();
+                const input = prompt('Nom du répertoire :');
 
-            createDirBtn?.removeAttribute('disabled');
-        });
+                formCreateDir.querySelector('input[name="name"]').value = input;
+
+                formCreateDir.requestSubmit();
+
+                createDirBtn?.removeAttribute('disabled');
+            }
+        })
     }
 
     if(formCreateDir){
@@ -70,12 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 createFlashMessage('Dossier créer', 'info');
                 formCreateDir.reset();
 
-                const frame = document.querySelector('turbo-frame#files-frame');
-                if(frame){
-                    const url = new URL(frame.src, window.location.origin);
-                    url.searchParams.set('_ts', Date.now().toString());
-                    frame.src = url.pathname + url.search;
-                }
+                reloadFilesFrame();
 
             } catch (err){
                 createFlashMessage('Impossible de créer le dossier.', 'error');
@@ -86,3 +83,16 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 });
+
+function reloadFilesFrame() {
+    const frame = document.getElementById('files-frame');
+    if (!frame) return;
+
+    // Toujours repartir de l’URL canonique prévue pour l’update
+    const base = frame.dataset.reloadUrl || frame.getAttribute('src');
+    if (!base) return; // rien à recharger proprement
+
+    const url = new URL(base, window.location.origin);
+    url.searchParams.set('_ts', Date.now().toString()); // anti-cache
+    frame.src = url.pathname + url.search;              // ⇦ déclenche le reload
+}

@@ -30,7 +30,8 @@
 
                 <turbo-frame
                     id="files-frame"
-                    src="{{ path('app_files_list', {parent: parent.id ?? null, turbo: 1}) }}"
+                    src="{{ path(parent ? 'app_files_list_dir' : 'app_files_list', parent ? { id: parent.id, turbo: 1 } : { turbo: 1 }) }}"
+                    data-reload-url="{{ path(parent ? 'app_files_list_dir' : 'app_files_list', parent ? { id: parent.id, turbo: 1 } : { turbo: 1 }) }}"
                 >
                     <div class="overflow-x-auto rounded-lg">
                         <table class="table min-w-full">
