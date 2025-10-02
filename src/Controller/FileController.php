@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\FileItem;
 use App\Enum\FileItemType;
 use App\Enum\ValidateNameEnum;
+use App\Form\FileUploadType;
 use App\Repository\FileItemRepository;
 use App\Service\ZipTreeExporter;
 use App\Util\Sanitizer;
@@ -25,15 +26,7 @@ final class FileController extends AbstractController
     #[Route('/upload/{id?}', name: 'upload')]
     public function upload(?FileItem $parent, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createFormBuilder(null, [
-            'csrf_protection' => true,
-            'csrf_field_name' => '_token',
-            'csrf_token_id'   => 'upload_form', // identifiant stable
-        ])
-            ->add('file', FileType::class, [
-                'mapped' => false,
-            ])
-            ->getForm();
+        $form = $this->createForm(FileUploadType::class);
 
         $form->handleRequest($request);
 
