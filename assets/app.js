@@ -22,3 +22,5 @@ import './js/member.js';
 import './js/secretary_request.js';
 
 import './js/files_list.js';
+
+import './js/sending_mail.js';

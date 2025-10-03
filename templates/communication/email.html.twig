@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Communication — Email{% endblock %}
+
+{% block body %}
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+
+            {# S'active par le js lorsque le formulaiore envoi tous les mails. #}
+            <div id="loading-frame"
+                 class="hidden absolute flex items-center justify-center
+            top-0 left-0 w-full h-full bg-black/60 text-center z-50">
+
+                <!-- le spinner -->
+                <div class="animate-spin rounded-full h-16 w-16 border-4 border-white border-t-transparent"></div>
+
+                <!-- le texte -->
+                <p class="ml-4 text-white font-bold">Chargement...</p>
+            </div>
+
+            <div class="flex flex-col gap-6">
+                <header class="space-y-2">
+                    <h1 class="text-xl font-semibold">Campagne email aux membres</h1>
+                    <p class="m-0 text-sm text-gray-700">Les champs du message acceptent la syntaxe Twig. Les variables disponibles sont listées ci-dessous.</p>
+                </header>
+
+                <section class="rounded-lg border border-brand/20 bg-white/70 p-4 space-y-3">
+                    <h2 class="text-lg font-semibold">Destinataires</h2>
+                    <p>{{ recipients|length }} membre(s) actifs recevront ce message.</p>
+                    <ul class="grid gap-1 text-sm text-gray-700">
+                        {% for member in recipients|slice(0, 10) %}
+                            <li>{{ member.firstName }} {{ member.lastName }} — {{ member.email }}</li>
+                        {% else %}
+                            <li>Aucun membre actif pour le moment.</li>
+                        {% endfor %}
+                        {% if recipients|length > 10 %}
+                            <li>… et {{ recipients|length - 10 }} autre(s) membre(s).</li>
+                        {% endif %}
+                    </ul>
+                </section>
+
+                <section class="rounded-lg border border-brand/20 bg-white/70 p-4 space-y-2">
+                    <h2 class="text-lg font-semibold">Variables disponibles</h2>
+                    <ul class="text-sm text-gray-700 grid gap-1">
+                        <li><code>{{ '{{ member.firstName }}' }}</code></li>
+                        <li><code>{{ '{{ member.lastName }}' }}</code></li>
+                        <li><code>{{ '{{ member.email }}' }}</code></li>
+                        <li><code>{{ '{{ member.membershipStatus }}' }}</code></li>
+                    </ul>
+                </section>
+
+                {% if preview_member and preview_html %}
+                    <section class="rounded-lg border border-brand/20 bg-white/70 p-4 space-y-2">
+                        <details open>
+                            <summary class="cursor-pointer font-semibold">Aperçu rendu pour {{ preview_member.firstName }} {{ preview_member.lastName }}</summary>
+                            <div class="p-3 border border-amber-800/10 bg-sand-light whitespace-pre-wrap text-sm">
+                                {{ preview_html|raw }}
+                            </div>
+                        </details>
+                    </section>
+                {% endif %}
+
+                {{ form_start(form, { attr: { novalidate: 'novalidate', 'id': 'form-mail-send' } }) }}
+                    <div class="grid gap-4">
+                        {{ form_row(form.from) }}
+                        {{ form_row(form.subject) }}
+                        {{ form_row(form.body) }}
+                    </div>
+
+                    <div class="mt-6 flex justify-end">
+                        <button type="submit" class="btn btn-primary">Envoyer aux membres</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
