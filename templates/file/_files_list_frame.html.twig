@@ -18,7 +18,7 @@
                 <tr>
                     {% if file.isFile %}
                         <td>
-                            <a class="link" href="{{ path('app_files_download', {id: file.id}) }}">📄 {{ file.name }}</a>
+                            <a class="link" href="{{ path('app_files_download', {id: file.id}) }}" data-turbo="false">📄 {{ file.name }}</a>
                         </td>
                         <td>{{ file.size|human_bytes(0) }}</td>
                         <td>{{ file.createdAt|date('d/m/Y') }}</td>

@@ -22,4 +22,10 @@ final class MainController extends AbstractController
     {
         return $this->render('main/bylaws.html.twig', []);
     }
+
+    #[Route('/about', name: 'about')]
+    public function about(): Response
+    {
+        return $this->render('main/about.html.twig');
+    }
 }

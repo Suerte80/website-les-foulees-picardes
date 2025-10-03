@@ -13,7 +13,7 @@
                     {# Ligne principale : nom + actions #}
                     <div class="tree-row">
                         {% if item.isFile %}
-                            📄 <a href="{{ path('app_files_download', { id: item.id }) }}">{{ item.name }}</a>
+                            📄 <a href="{{ path('app_files_download', { id: item.id }) }}" data-turbo="false">{{ item.name }}</a>
                             {% if item.size is not null %}
                                 <small>({{ (item.size / 1024)|number_format(1) }} ko)</small>
                             {% endif %}
@@ -34,14 +34,14 @@
 
                     {# Formulaire nouveau dossier (seulement si dossier) #}
                     {% if item.isFolder %}
-                        <form action="{{ path('app_files_create_directory') }}" method="post" class="new-folder">
+                        <form action="{{ path('app_files_create_directory') }}" method="post" class="new-folder" data-turbo="false">
                             <input type="hidden" name="_token" value="{{ csrf_token('create_dir' ~ item.id) }}">
                             <input type="hidden" name="parent_id" value="{{ item.id }}">
                             <label for="name_{{ item.id }}">Nom :</label>
                             <input type="text" id="name_{{ item.id }}" name="name" required>
                             <button type="submit">Ajouter</button>
                         </form>
-                        <a href="{{ path('app_files_download', { id: item.id }) }}">Télécharger</a>
+                        <a href="{{ path('app_files_download', { id: item.id }) }}" data-turbo="false">Télécharger</a>
 
                         {# Récursion avec garde-fous : maxDepth et collection initialisée #}
                         {% if item.children is defined

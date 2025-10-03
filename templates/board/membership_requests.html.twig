@@ -38,10 +38,11 @@
                                 data-url="{{ path('app_secretary_validate', { id: membership_request.id }) }}"
                                 data-token="{{ csrf_token('validate' ~ membership_request.id) }}"
                                 data-rowsel="#row-{{ membership_request.id }}"
+                                data-turbo="false"
                             >Valider</button>
 {#                        </form>#}
 
-                        <form action="{{ path('app_secretary_reject', {id: membership_request.id}) }}" method="POST">
+                        <form action="{{ path('app_secretary_reject', {id: membership_request.id}) }}" method="POST" data-turbo="false">
                             <button
                                 type="submit"
                                 class="btn btn-cancel btn-cancel-request"
@@ -49,6 +50,7 @@
                                 data-url="{{ path('app_secretary_reject', { id: membership_request.id }) }}"
                                 data-token="{{ csrf_token('reject' ~ membership_request.id) }}"
                                 data-rowsel="#row-{{ membership_request.id }}"
+                                data-turbo="false"
                             >Rejeter</button>
                         </form>
                     </th>

@@ -1,91 +1,176 @@
-<!-- Navbar (inchangée ou presque) -->
-<nav class="w-screen mx-auto px-7 py-5 flex items-center gap-6 shadow-md shadow-ink/20" aria-label="Navigation principale">
+{# Navbar principale #}
+<nav class="w-screen mx-auto px-7 py-5 flex items-center gap-6 shadow-md shadow-ink/20"
+     aria-label="Navigation principale"
+     data-controller="hamburger">
+
     <a class="flex items-center gap-3 tracking-tight" href="{{ path('app_index') }}" aria-label="Les Foulées Picardes">
         <img src="/images_svg/logo_noir_navbar.svg" alt="Logo des Foulées Picardes" width="64" height="64" class="scale-150">
     </a>
-    <div class="ms-auto flex items-center gap-6 font-semibold">
-        <!-- Hamburger visible < lg -->
-        <button id="hamburger-open"
-                class="hamburger lg:hidden"
-                aria-controls="hamburger-menu"
-                aria-expanded="false"
-                aria-label="Ouvrir le menu"></button>
 
-        {% if not app.user %}
-            <!-- Liens desktop visibles à partir de lg -->
-            <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
-                hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
-               href="{{ path('app_membership_request') }}">
-                <span class="relative z-10">Adhérer à l'association</span>
+    <div class="ms-auto hidden lg:flex items-center gap-6 font-semibold">
+        <a class="inline-flex items-center transition duration-200 ease-in-out hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
+           href="{{ path('app_news_index') }}">
+            <span class="relative z-10">Actus</span>
+        </a>
+
+        {% if is_granted('ROLE_USER') %}
+            <a class="inline-flex items-center transition duration-200 ease-in-out hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
+               href="{{ path('app_social_run_index') }}">
+                <span class="relative z-10">Événements sportifs</span>
             </a>
+        {% endif %}
 
-            <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
-                hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
+        <a class="inline-flex items-center transition duration-200 ease-in-out hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
+           href="{{ path('app_about') }}">
+            <span class="relative z-10">À propos</span>
+        </a>
+
+        <a class="inline-flex items-center transition duration-200 ease-in-out hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
+           href="{{ path('app_membership_request') }}" data-turbo="false">
+            <span class="relative z-10">Nous rejoindre</span>
+        </a>
+
+        <a class="inline-flex items-center transition duration-200 ease-in-out hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
+           href="#">
+            <span class="relative z-10">Contact</span>
+        </a>
+
+        {% if app.user %}
+            <div class="relative group">
+                <button class="inline-flex items-center gap-1 transition duration-200 ease-in-out hover:underline decoration-2 decoration-[#f6e6c8]"
+                        aria-haspopup="true" aria-expanded="false">
+                    <span>Espace membre</span>
+                    <span aria-hidden="true">▾</span>
+                </button>
+                <div class="absolute right-0 mt-2 w-52 rounded-md bg-white py-2 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition"
+                     role="menu" aria-label="Menu espace membre">
+                    <a class="block px-4 py-2 hover:bg-sand/40" href="{{ path('app_member_index') }}">Mon profil</a>
+                    <span class="block px-4 py-2 text-gray-400">Mes documents (en cours)</span>
+                    <a class="block px-4 py-2 hover:bg-sand/40" href="{{ path('app_social_run_index') }}">Sorties conviviales</a>
+                    <form method="post" action="{{ path('app_logout') }}" class="block" data-turbo="false">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                        <button type="submit" class="w-full text-left px-4 py-2 hover:bg-sand/40">Déconnexion</button>
+                    </form>
+                </div>
+            </div>
+
+            {% if is_granted('ROLE_BUREAU') %}
+                <div class="relative group">
+                    <button class="inline-flex items-center gap-1 transition duration-200 ease-in-out hover:underline decoration-2 decoration-[#f6e6c8]"
+                            aria-haspopup="true" aria-expanded="false">
+                        <span>Espace bureau</span>
+                        <span aria-hidden="true">▾</span>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-56 rounded-md bg-white py-2 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition"
+                         role="menu" aria-label="Menu espace bureau">
+                        <a class="block px-4 py-2 hover:bg-sand/40" href="{{ path('app_board') }}">Tableau de bord</a>
+                        <a class="block px-4 py-2 hover:bg-sand/40" href="{{ path('app_news_index') }}">Gestion actualités</a>
+                        <a class="block px-4 py-2 hover:bg-sand/40" href="{{ path('app_social_run_index') }}">Gestion sorties</a>
+                        {% if is_granted('ROLE_SECRETAIRE') %}
+                            <a class="block px-4 py-2 hover:bg-sand/40" href="{{ path('app_secretary_requests') }}">Valider adhésions</a>
+                        {% endif %}
+                        <a class="block px-4 py-2 hover:bg-sand/40" href="{{ path('app_files_list') }}">Gestion documents</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <a class="inline-flex items-center transition duration-200 ease-in-out hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
                href="{{ path('app_login') }}">
                 <span class="relative z-10">Connexion</span>
             </a>
         {% endif %}
-
-        <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
-            hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
-           href="">
-            <span class="relative z-10">Événements à venir</span>
-        </a>
-
-        <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
-            hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
-           href="">
-            <span class="relative z-10">Dernières sorties</span>
-        </a>
-
-        <a class="text-center hidden lg:inline-flex items-center transition duration-200 ease-in-out
-            hover:underline decoration-2 decoration-[#f6e6c8] hover:scale-[1.05]"
-           href="">
-            <span class="relative z-10">Actualités</span>
-        </a>
     </div>
+
+    <button id="hamburger-open"
+            class="hamburger lg:hidden ms-auto"
+            aria-controls="hamburger-menu"
+            aria-expanded="false"
+            aria-label="Ouvrir le menu"
+            data-hamburger-target="openButton"
+            data-action="click->hamburger#open"></button>
 </nav>
 
-<!-- Overlay + Drawer -->
 <div id="hamburger-menu"
      class="fixed inset-0 z-[100] hidden"
-     role="dialog" aria-modal="true" aria-label="Menu mobile">
+     role="dialog" aria-modal="true"
+     aria-label="Menu mobile"
+     data-hamburger-target="drawer"
+     data-turbo="false">
 
-    <!-- Backdrop (panel) -->
     <button id="backdrop"
-            class="absolute inset-0 bg-black/80 z-[100] xl:hidden"
-            aria-label="Fermer le menu"></button>
+            class="absolute inset-0 bg-black/80 z-[100]"
+            aria-label="Fermer le menu"
+            data-hamburger-target="backdrop"
+            data-action="click->hamburger#close"></button>
 
-    <!-- Panneau latéral -->
-    <aside class="relative z-[110] h-full w-80 max-w-[85vw] bg-brand shadow-2xl">
-        <nav class="px-7 py-5 flex items-center gap-6" aria-label="Navigation principale">
+    <aside class="relative z-[110] h-full w-80 max-w-[85vw] bg-brand text-white shadow-2xl">
+        <nav class="px-7 py-5 flex items-center gap-6" aria-label="Navigation principale mobile">
             <a class="flex items-center gap-3 tracking-tight" href="{{ path('app_index') }}" aria-label="Les Foulées Picardes">
                 <img src="/images_svg/logo_noir_navbar.svg" alt="Logo des Foulées Picardes" width="64" height="64" class="scale-150">
             </a>
             <div class="ms-auto flex items-center gap-6 font-semibold">
-                <button id="hamburger-close" class="close-btn" aria-label="Fermer le menu"></button>
+                <button id="hamburger-close"
+                        class="close-btn"
+                        aria-label="Fermer le menu"
+                        data-hamburger-target="closeButton"
+                        data-action="click->hamburger#close"></button>
             </div>
         </nav>
 
-        <ol class="flex flex-col gap-1 px-4 pb-6">
-            {% if not app.user %}
-                <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
-                    <a class="block text-left" href="{{ path('app_membership_request') }}">Adhérer à l'association</a>
+        <ol class="flex flex-col gap-1 px-4 pb-6 text-xl font-bold text-white">
+            <li class="p-2 hover:bg-white/10"><a class="block text-black" href="{{ path('app_news_index') }}" data-action="click->hamburger#closeFromLink">Actus</a></li>
+            {% if is_granted('ROLE_USER') %}
+                <li class="p-2 hover:bg-white/10"><a class="block text-black" href="{{ path('app_social_run_index') }}" data-action="click->hamburger#closeFromLink">Événements sportifs</a></li>
+            {% endif %}
+            <li class="p-2 hover:bg-white/10"><a class="block text-black" href="{{ path('app_about') }}" data-action="click->hamburger#closeFromLink">À propos</a></li>
+            <li class="p-2 hover:bg-white/10"><a class="block text-black" href="{{ path('app_membership_request') }}" data-action="click->hamburger#closeFromLink" data-turbo="false">Nous rejoindre</a></li>
+            <li class="p-2 hover:bg-white/10"><a class="block text-black" href="#" data-action="click->hamburger#closeFromLink">Contact</a></li>
+
+            {% if app.user %}
+                <li class="mt-3 border-t border-white/20 pt-3">
+                    <details class="group" open>
+                        <summary class="flex justify-between items-center cursor-pointer text-black underline">
+                            <span>Espace membre</span>
+                            <span aria-hidden="true">▾</span>
+                        </summary>
+                        <ul class="mt-2 space-y-1 text-base font-normal">
+                            <li><a class="block px-2 py-1 hover:bg-white/10 text-black" href="{{ path('app_member_index') }}" data-action="click->hamburger#closeFromLink">Mon profil</a></li>
+                            <li><span class="block px-2 py-1 text-black underline cursor-not-allowed">Mes documents (en cours)</span></li>
+                            <li><a class="block px-2 py-1 hover:bg-white/10 text-black" href="{{ path('app_social_run_index') }}" data-action="click->hamburger#closeFromLink">Sorties conviviales</a></li>
+                            <li>
+                                <form method="post" action="{{ path('app_logout') }}" data-action="submit->hamburger#close" data-turbo="false">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                                    <button type="submit" class="w-full text-left px-2 py-1 hover:bg-white/10 text-black">Déconnexion</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </details>
                 </li>
 
-                <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
-                    <a class="block text-left" href="{{ path('app_login') }}">Connexion</a>
+                {% if is_granted('ROLE_BUREAU') %}
+                    <li class="mt-2">
+                    <details class="group" open>
+                        <summary class="flex justify-between items-center cursor-pointer text-black underline">
+                            <span>Espace bureau</span>
+                            <span aria-hidden="true">▾</span>
+                        </summary>
+                            <ul class="mt-2 space-y-1 text-base font-normal">
+                                <li><a class="block px-2 py-1 hover:bg-white/10 text-black" href="{{ path('app_board') }}" data-action="click->hamburger#closeFromLink">Tableau de bord</a></li>
+                                <li><a class="block px-2 py-1 hover:bg-white/10 text-black" href="{{ path('app_news_index') }}" data-action="click->hamburger#closeFromLink">Gestion actualités</a></li>
+                                <li><a class="block px-2 py-1 hover:bg-white/10 text-black" href="{{ path('app_social_run_index') }}" data-action="click->hamburger#closeFromLink">Gestion sorties</a></li>
+                                {% if is_granted('ROLE_SECRETAIRE') %}
+                                    <li><a class="block px-2 py-1 hover:bg-white/10 text-black" href="{{ path('app_secretary_requests') }}" data-action="click->hamburger#closeFromLink">Valider adhésions</a></li>
+                                {% endif %}
+                                <li><a class="block px-2 py-1 hover:bg-white/10 text-black" href="{{ path('app_files_list') }}" data-action="click->hamburger#closeFromLink">Gestion documents</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li class="mt-3 border-t border-white/20 pt-3">
+                    <a class="block px-2 py-1 hover:bg-white/10 text-black" href="{{ path('app_login') }}" data-action="click->hamburger#closeFromLink">Connexion</a>
                 </li>
             {% endif %}
-            <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
-                <a class="block text-left" href="">Événements à venir</a>
-            </li>
-            <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
-                <a class="block text-left" href="">Dernières sorties</a>
-            </li>
-            <li class="relative underline decoration-white/60 cursor-pointer text-xl font-bold p-2 hover:bg-white/10">
-                <a class="block text-left" href="">Actualités</a>
-            </li>
         </ol>
     </aside>
 </div>
