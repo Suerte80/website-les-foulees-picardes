@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class SocialRunController extends AbstractController
 {
     #[Route(name: 'app_social_run_index', methods: ['GET'])]
-    #[IsGranted('git ')]
+    #[IsGranted('ROLE_BUREAU')]
     public function index(SocialRunRepository $socialRunRepository): Response
     {
         return $this->render('social_run/index.html.twig', [
