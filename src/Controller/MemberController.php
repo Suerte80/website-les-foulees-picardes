@@ -33,16 +33,7 @@ final class MemberController extends AbstractController
          */
         $member = $this->getUser();
 
-        $form = $this->createForm(MemberType::class, $member, [
-            'value' => [
-                'email' => $member->getEmail(),
-                'firstname' => $member->getFirstname(),
-                'lastname' => $member->getLastname(),
-                'address' => $member->getAddress(),
-                'dateOFBirth' => $member->getDateOfBirth(),
-                'phone' => $member->getPhone(),
-            ]
-        ]);
+        $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
@@ -51,11 +42,12 @@ final class MemberController extends AbstractController
             if($uploaded){
                 $newName = $avatarManager->handle($uploaded, $member->getAvatarFilename());
                 $member->setAvatarFilename($newName);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Avatar mis à jour.');
-                return $this->redirectToRoute('app_member_index');
             }
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Profil mis à jour.');
+            return $this->redirectToRoute('app_member_index');
         }
 
         return $this->render('member/index.html.twig', [
@@ -79,19 +71,26 @@ final class MemberController extends AbstractController
         $form = $this->createForm(ChangePasswordType::class, $data);
         $form->handleRequest($request);
 
-        if($request->isXmlHttpRequest()) {
-            if($form->isSubmitted() && $form->isValid()) {
-                $hashedPassword = $passwordHasher->hashPassword($member, $data->newPassword);
+        if($form->isSubmitted() && $form->isValid()) {
+            $hashedPassword = $passwordHasher->hashPassword($member, $data->newPassword);
+            $member->setPassword($hashedPassword);
 
-                $member->setPassword($hashedPassword);
+            $entityManager->flush();
 
-                $entityManager->flush();
+            $this->addFlash('success', 'Votre mot de passe a été modifié.');
 
-                $this->addFlash('success', 'Votre mot de passe a été modifier.');
+            if($request->isXmlHttpRequest()) {
+                $freshForm = $this->createForm(ChangePasswordType::class, new ChangePasswordData());
 
-                return $this->redirectToRoute('app_member_index', []);
+                return $this->render('member/_change_password_form.html.twig', [
+                    'form' => $freshForm->createView(),
+                ]);
             }
 
+            return $this->redirectToRoute('app_member_index');
+        }
+
+        if($request->isXmlHttpRequest() && $form->isSubmitted()) {
             return $this->render('member/_change_password_form.html.twig', [
                 'form' => $form->createView(),
             ], new Response('', Response::HTTP_UNPROCESSABLE_ENTITY));

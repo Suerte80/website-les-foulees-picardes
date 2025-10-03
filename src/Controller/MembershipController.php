@@ -95,7 +95,7 @@ final class MembershipController extends AbstractController
         }
 
         return $this->render('membership/request.html.twig', [
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

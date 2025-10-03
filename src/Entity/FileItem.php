@@ -154,18 +154,6 @@ class FileItem
         return $this;
     }
 
-    public function getFileItem(): ?self
-    {
-        return $this->fileItem;
-    }
-
-    public function setFileItem(?self $fileItem): static
-    {
-        $this->fileItem = $fileItem;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, self>
      */
@@ -178,7 +166,7 @@ class FileItem
     {
         if (!$this->children->contains($child)) {
             $this->children->add($child);
-            $child->setFileItem($this);
+            $child->setParent($this);
         }
 
         return $this;
@@ -188,8 +176,8 @@ class FileItem
     {
         if ($this->children->removeElement($child)) {
             // set the owning side to null (unless already changed)
-            if ($child->getFileItem() === $this) {
-                $child->setFileItem(null);
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
             }
         }
 

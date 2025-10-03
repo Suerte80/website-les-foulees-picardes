@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ social_run.name }}{% endblock %}
+
+{% block body %}
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+            <div class="flex flex-col gap-6">
+                <header class="space-y-1">
+                    <p class="m-0 text-xs uppercase tracking-wide text-gray-500">Sortie conviviale</p>
+                    <h1 class="text-xl font-semibold">{{ social_run.name }}</h1>
+                    <p class="text-sm text-gray-600">Départ le {{ social_run.startingAt ? social_run.startingAt|date('d/m/Y à H\:i') : 'date à préciser' }}.</p>
+                </header>
+
+                <dl class="grid gap-4 text-sm sm:grid-cols-2">
+                    <div>
+                        <dt class="font-semibold text-gray-700">Point de rencontre</dt>
+                        <dd class="text-gray-900">{{ social_run.meetingPoint }}</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-gray-700">Identifiant</dt>
+                        <dd class="text-gray-900">#{{ social_run.id }}</dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt class="font-semibold text-gray-700">Description</dt>
+                        <dd class="whitespace-pre-line text-gray-900">{{ social_run.description }}</dd>
+                    </div>
+                </dl>
+
+                <div class="flex flex-wrap justify-between gap-2">
+                    <a href="{{ path('app_social_run_index') }}" class="btn btn-secondary">← Retour à la liste</a>
+                    <div class="flex gap-2">
+                        <a href="{{ path('app_social_run_edit', {'id': social_run.id}) }}" class="btn btn-primary">Modifier</a>
+                        {{ include('social_run/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

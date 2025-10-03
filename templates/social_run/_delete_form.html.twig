@@ -1,0 +1,10 @@
+<form
+    method="post"
+    action="{{ path('app_social_run_delete', {'id': social_run.id}) }}"
+    class="inline-flex"
+    data-turbo="false"
+    onsubmit="return confirm('Confirmer la suppression de cette sortie ?');"
+>
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ social_run.id) }}">
+    <button type="submit" class="btn btn-cancel">Supprimer</button>
+</form>

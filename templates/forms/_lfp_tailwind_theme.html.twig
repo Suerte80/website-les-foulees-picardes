@@ -10,9 +10,13 @@
     {{ parent() }}
 {%- endblock %}
 
-{% block form_end %}
-</div>
-{% endblock %}
+{% block form_end -%}
+    {% set should_render_rest = (should_render_rest ?? true) and (render_rest|default(true)) %}
+    {% if should_render_rest %}
+        {{ form_rest(form) }}
+    {% endif %}
+    {{ parent() }}
+{%- endblock %}
 
 {# ===== LABEL ===== #}
 {% block form_label -%}

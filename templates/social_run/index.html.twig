@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sorties conviviales{% endblock %}
+
+{% block body %}
+    <section class="section-card bg-white space-y-6">
+        <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h1 class="m-0">Sorties conviviales</h1>
+                <p class="m-0 text-sm text-gray-600">Planifiez et suivez les rendez-vous running de l'association.</p>
+            </div>
+
+            <nav class="flex flex-wrap items-center gap-2">
+                {% if is_granted('ROLE_VIE_ASSO') %}
+                <a href="{{ path('app_social_run_new') }}" class="btn btn-primary btn-sm">＋ Nouvelle sortie</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <div class="overflow-x-auto rounded-lg">
+            <table class="table min-w-full">
+                <thead>
+                    <tr>
+                        <th class="w-[22%]">Nom</th>
+                        <th class="w-[18%]">Départ</th>
+                        <th class="w-[20%]">Point de rencontre</th>
+                        <th>Description</th>
+                        <th class="w-[15%] text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for social_run in social_runs %}
+                    <tr>
+                        <td>{{ social_run.name }}</td>
+                        <td>{{ social_run.startingAt ? social_run.startingAt|date('d/m/Y H\:i') : '—' }}</td>
+                        <td>{{ social_run.meetingPoint }}</td>
+                        <td class="align-top text-sm text-gray-700">{{ social_run.description|u.truncate(120, '…') }}</td>
+                        <td class="flex flex-col md:flex-row gap-2 text-right space-x-2">
+                            <a href="{{ path('app_social_run_show', {'id': social_run.id}) }}" class="btn btn-secondary btn-sm">Détails</a>
+                            <a href="{{ path('app_social_run_edit', {'id': social_run.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="info-box">
+                                <details class="info-box" open>
+                                    <summary>
+                                        <h3 class="m-0">Aucune sortie prévue</h3>
+                                        <span class="info-box__chev">›</span>
+                                    </summary>
+                                    <div class="info-box__body">
+                                        <p>Saisissez votre première sortie conviviale pour informer les adhérents.</p>
+                                        <a href="{{ path('app_social_run_new') }}" class="btn btn-primary btn-sm">＋ Planifier une sortie</a>
+                                    </div>
+                                </details>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

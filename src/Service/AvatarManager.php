@@ -21,7 +21,7 @@ class AvatarManager
         // Changer l'image source selon MIME
         $mime = $file->getMimeType();
         $src = match ($mime) {
-            'image/jpg' => imagecreatefromjpg($file->getPathname()),
+            'image/jpeg', 'image/jpg', 'image/pjpeg' => imagecreatefromjpeg($file->getPathname()),
             'image/png' => imagecreatefrompng($file->getPathname()),
             'image/webp' => imagecreatefromwebp($file->getPathname()),
             default => null,
@@ -32,15 +32,15 @@ class AvatarManager
         }
 
         // Auto-rotation EXIF (JPEG uniquement)
-        if($mime === 'image/jpeg'){
+        if(in_array($mime, ['image/jpeg', 'image/jpg', 'image/pjpeg'], true)){
             $this->autorotateIfNeeded($file->getPathname(), $src);
         }
 
         // Redimensionnement max 512
         [$w, $h] = [imagesx($src), imagesy($src)];
         $max = 512;
-        if($w > $max || $h > $max){
-            $ratio = min($max / $w, $h / $max);
+        if($w > 0 && $h > 0 && ($w > $max || $h > $max)){
+            $ratio = min($max / $w, $max / $h);
             $nw = max(1, (int) round($w * $ratio));
             $nh = max(1, (int) round($h * $ratio));
             $dst = imagecreatetruecolor($nw, $nh);

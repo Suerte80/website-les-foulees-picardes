@@ -54,7 +54,7 @@ final class SecretaryController extends AbstractController
         $member = $membershipRequest->getRequester();
         $member->setMembershipStatus('rejected');
         $member->setDeletedAt(new \DateTimeImmutable('now'));
-        $member->setIsVerified(true);
+        $member->setIsVerified(false);
 
         $entityManager->flush();
 

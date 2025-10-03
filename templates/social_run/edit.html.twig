@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une sortie{% endblock %}
+
+{% block body %}
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+            <div class="flex flex-col gap-4">
+                <header>
+                    <h1 class="text-xl font-semibold">Modifier « {{ social_run.name }} »</h1>
+                    <p class="text-sm text-gray-600">Actualisez les informations communiquées aux adhérents.</p>
+                </header>
+
+                {{ include('social_run/_form.html.twig', {
+                    form: form,
+                    button_label: 'Enregistrer les changements'
+                }) }}
+
+                <div class="flex flex-wrap justify-between gap-2">
+                    <a href="{{ path('app_social_run_index') }}" class="btn btn-secondary">← Retour à la liste</a>
+                    <div class="flex gap-2">
+                        <a href="{{ path('app_social_run_show', {'id': social_run.id}) }}" class="btn btn-secondary">Voir la fiche</a>
+                        {{ include('social_run/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

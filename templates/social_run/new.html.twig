@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle sortie conviviale{% endblock %}
+
+{% block body %}
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+            <div class="flex flex-col gap-4">
+                <header>
+                    <h1 class="text-xl font-semibold">Planifier une sortie conviviale</h1>
+                    <p class="text-sm text-gray-600">Renseignez les informations clés pour annoncer la sortie auprès des membres.</p>
+                </header>
+
+                {{ include('social_run/_form.html.twig', {
+                    form: form,
+                    button_label: 'Publier la sortie'
+                }) }}
+
+                <div class="flex justify-end">
+                    <a href="{{ path('app_social_run_index') }}" class="btn btn-secondary">← Retour à la liste</a>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
