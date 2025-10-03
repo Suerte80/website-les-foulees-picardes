@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle actualité{% endblock %}
+
+{% block body %}
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+            <div class="flex flex-col gap-4">
+                <header>
+                    <h1 class="text-xl font-semibold">Publier une actualité</h1>
+                    <p class="text-sm text-gray-600">Rédigez le titre et le contenu de la nouvelle.</p>
+                </header>
+
+                {{ include('news/_form.html.twig', {
+                    form: form,
+                    button_label: 'Publier l\'actualité'
+                }) }}
+
+                <div class="flex justify-end">
+                    <a href="{{ path('app_news_index') }}" class="btn btn-secondary">← Retour à la liste</a>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+    {% set formErrors = form_errors(form) %}
+    {% if formErrors is not empty %}
+        <div class="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p class="font-semibold">Merci de corriger les erreurs suivantes :</p>
+            {{ formErrors }}
+        </div>
+    {% endif %}
+
+    <div class="grid gap-4">
+        <div>
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            {{ form_help(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div>
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+            {{ form_help(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+    </div>
+
+    <div class="mt-6 flex justify-end gap-2">
+        <button type="submit" class="btn btn-primary">
+            {{ button_label|default('Publier') }}
+        </button>
+    </div>
+{{ form_end(form) }}

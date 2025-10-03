@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ news.name }}{% endblock %}
+
+{% block body %}
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+            <div class="flex flex-col gap-6">
+                <header class="space-y-1">
+                    <p class="m-0 text-xs uppercase tracking-wide text-gray-500">Actualité</p>
+                    <h1 class="text-xl font-semibold">{{ news.name }}</h1>
+                </header>
+
+                <article class="prose prose-sm max-w-none text-gray-900">
+                    {{ news.description|nl2br }}
+                </article>
+
+                <div class="flex flex-wrap justify-between gap-2">
+                    <a href="{{ path('app_news_index') }}" class="btn btn-secondary">← Retour à la liste</a>
+                    <div class="flex gap-2">
+                        <a href="{{ path('app_news_edit', {'id': news.id}) }}" class="btn btn-primary">Modifier</a>
+                        {{ include('news/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

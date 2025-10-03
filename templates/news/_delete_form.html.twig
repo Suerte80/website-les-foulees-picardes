@@ -1,0 +1,10 @@
+<form
+    method="post"
+    action="{{ path('app_news_delete', {'id': news.id}) }}"
+    class="inline-flex"
+    data-turbo="false"
+    onsubmit="return confirm('Confirmer la suppression de cette actualité ?');"
+>
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ news.id) }}">
+    <button type="submit" class="btn btn-cancel">Supprimer</button>
+</form>

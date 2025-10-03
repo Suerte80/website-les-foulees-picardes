@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Actualités{% endblock %}
+
+{% block body %}
+    <section class="section-card bg-white space-y-6">
+        <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h1 class="m-0">Actualités</h1>
+                <p class="m-0 text-sm text-gray-600">Gérez les publications diffusées auprès des membres.</p>
+            </div>
+
+            {% if is_granted('ROLE_COM') %}
+            <nav class="flex flex-wrap items-center gap-2">
+                <a href="{{ path('app_news_new') }}" class="btn btn-primary btn-sm">＋ Nouvelle actualité</a>
+            </nav>
+            {% endif %}
+        </header>
+
+        <div class="overflow-x-auto rounded-lg">
+            <table class="table min-w-full">
+                <thead>
+                    <tr>
+                        <th class="w-[28%]">Titre</th>
+                        <th>Résumé</th>
+                        <th class="w-[18%] text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in news %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td class="text-sm text-gray-700">{{ item.description|u.truncate(160, '…') }}</td>
+                        <td class="text-right space-x-2">
+                            <a href="{{ path('app_news_show', {'id': item.id}) }}" class="btn btn-secondary btn-sm">Voir</a>
+                            <a href="{{ path('app_news_edit', {'id': item.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="info-box">
+                                <details class="info-box" open>
+                                    <summary>
+                                        <h3 class="m-0">Aucune actualité publiée</h3>
+                                        <span class="info-box__chev">›</span>
+                                    </summary>
+                                    {% if is_granted('ROLE_COM') %}
+                                    <div class="info-box__body">
+                                        <p>Publiez une première actualité pour informer les adhérents des nouveautés.</p>
+                                        <a href="{{ path('app_news_new') }}" class="btn btn-primary btn-sm">＋ Rédiger une actualité</a>
+                                    </div>
+                                    {% endif %}
+                                </details>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

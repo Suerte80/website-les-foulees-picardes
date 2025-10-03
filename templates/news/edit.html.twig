@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une actualité{% endblock %}
+
+{% block body %}
+    {% embed 'macros/_section.html.twig' %}
+        {% block content %}
+            <div class="flex flex-col gap-4">
+                <header>
+                    <h1 class="text-xl font-semibold">Modifier « {{ news.name }} »</h1>
+                    <p class="text-sm text-gray-600">Actualisez le contenu avant diffusion.</p>
+                </header>
+
+                {{ include('news/_form.html.twig', {
+                    form: form,
+                    button_label: 'Mettre à jour'
+                }) }}
+
+                <div class="flex flex-wrap justify-between gap-2">
+                    <a href="{{ path('app_news_index') }}" class="btn btn-secondary">← Retour à la liste</a>
+                    <div class="flex gap-2">
+                        <a href="{{ path('app_news_show', {'id': news.id}) }}" class="btn btn-secondary">Voir la fiche</a>
+                        {{ include('news/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
